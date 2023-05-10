@@ -1,0 +1,30 @@
+.container {
+  width: 100%;
+  height: 100%;
+
+  border-radius: 15px;
+}
+.container > img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+.content {
+  height: 70px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  position: relative;
+}
+
+.avatar {
+  position: absolute;
+  border: 5px solid #19191a;
+
+  top: -50px;
+  left: 15px;
+}
+.info {
+  margin-left: 30px;
+  flex: 1;
+}

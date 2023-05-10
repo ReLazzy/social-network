@@ -1,0 +1,26 @@
+.auth--container {
+  width: 30%;
+  display: flex;
+  margin: 0 auto;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.auth--title {
+  display: block; /* Блочная ссылка */
+  white-space: nowrap;
+  font-size: 50px;
+  font-weight: lighter;
+}
+.logo {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #2688eb;
+}
+.aaaa {
+  display: flex;
+}
+.aaaa > img {
+  flex: 1;
+}

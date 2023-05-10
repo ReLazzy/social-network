@@ -1,0 +1,28 @@
+.author {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+}
+img {
+  border-radius: 15px;
+  width: 100%;
+  height: auto;
+}
+.reaction {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  align-items: center;
+  justify-content: start;
+}
+.bottomSide {
+  display: flex;
+  justify-content: space-between;
+}
+.container {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
