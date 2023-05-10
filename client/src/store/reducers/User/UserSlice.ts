@@ -1,12 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { IUser } from '../../../types/modals/IUser';
 import { UserType } from '../../../types/User';
-import { PostType } from '../../../types/Post';
+import { ReseivedPostType } from '../../../types/Post';
 import { getUserByUsername } from './UserActionCreators';
 
 interface UserState {
   user: UserType;
-  posts: PostType[];
+  posts: ReseivedPostType[];
   isLoading: boolean;
   error: string;
 }

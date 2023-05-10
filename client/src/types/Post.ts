@@ -1,4 +1,4 @@
-export interface PostType {
+export interface ReseivedPostType {
   userId: string;
   id: string;
   disc?: string;

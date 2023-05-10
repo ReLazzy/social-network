@@ -9,43 +9,59 @@ import {
   FormLayoutGroup,
   ButtonGroup,
   Group,
+  ScreenSpinner,
+  Title,
 } from '@vkontakte/vkui';
 import { PostProps } from './Post';
 
 import { useRef, useState } from 'react';
-import { useAppSelector } from '../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { uploadImage } from '../store/reducers/Upload/UploadACtionCreator';
+import { addPost } from '../store/reducers/Post/PostActionCreator';
+
+export interface SendPostType {
+  desc?: string;
+  image?: string;
+}
 
 const CreatePost = () => {
-  // const post: PostProps = {
-  //   userID: AuthUser.id,
-  //   id: posts.length,
-  //   time: '',
-  //   like: 0,
-  // };
-  // const addNewPost = () => {
-  //   if (text === '' && image === '') return;
-  //   post.text = text;
-  //   post.image = image;
-  //   posts[posts.length] = post;
-  // };
-  let a = useRef<HTMLInputElement>();
-  const [text, setText] = useState<string | undefined>(undefined);
-  const [image, setImage] = useState();
-  const [imageURL, setImageURL] = useState();
+  const { isLoading, error } = useAppSelector((state) => state.uploadReducer);
+  const { isLoading: isLoadingCreate, error: errorCreate } = useAppSelector(
+    (state) => state.postReducer
+  );
+  const dispatch = useAppDispatch();
+  const [text, setText] = useState<string>('');
+  const [file, setFile] = useState<Blob | MediaSource>();
+  const [fileUrl, setFileUrl] = useState<string>('');
 
+  const data = new FormData();
+
+  const submit = () => {
+    const newPost: SendPostType = { desc: text, image: fileUrl };
+    if (newPost.desc === '' && newPost.image === '') {
+      console.log('Вы клоун?');
+      return;
+    }
+    dispatch(addPost(newPost));
+  };
   const handleOnChange = (e: any) => {
     e.preventDefault();
     if (e.target.files && e.target.files.length) {
       const file = e.target.files[0];
-      setImage(file);
+      setFile(file);
+      const fileName = Date.now() + file.name;
+      setFileUrl(fileName);
+      data.append('name', fileName);
+      data.append('file', file);
+      dispatch(uploadImage(data));
     }
   };
-  const { username, followings, isLoading } = useAppSelector(
-    (state) => state.authReducer
-  );
+
   return (
     <Group>
       <FormLayout>
+        {error && <Title>{error}</Title>}
+        {errorCreate && <Title>{errorCreate}</Title>}
         <FormItem>
           <Textarea
             value={text}
@@ -54,7 +70,23 @@ const CreatePost = () => {
             placeholder="Что нового?"
           />
         </FormItem>
-
+        {isLoading && <ScreenSpinner state="loading" />}
+        {isLoadingCreate && <ScreenSpinner state="loading" />}
+        {file && (
+          <FormItem>
+            <div>
+              <img
+                style={{
+                  borderRadius: '15px',
+                  width: '100%',
+                  height: 'auto',
+                }}
+                src={URL.createObjectURL(file)}
+                alt="image"
+              />
+            </div>
+          </FormItem>
+        )}
         <FormItem>
           <ButtonGroup
             style={{ display: 'flex', justifyContent: 'space-between' }}
@@ -63,9 +95,7 @@ const CreatePost = () => {
               Фотография
             </File>
             <Button
-              onClick={() => {
-                console.log(followings);
-              }}
+              onClick={submit}
               mode="outline"
               size="m"
               after={<Icon24SendOutline />}

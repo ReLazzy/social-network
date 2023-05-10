@@ -5,14 +5,16 @@ const authMiddleware = require('../middlewaree/authMiddleware');
 //create a post
 
 router.post('/', authMiddleware, async (req, res) => {
-  const newPost = new Post(req.body);
+  const newPost = new Post({
+    userId: req.user.id,
+    desc: req.body.desc,
+    img: req.body.image,
+  });
+  console.log(req.body);
   try {
-    if (req.user.id === req.body.userId) {
-      const savedPost = await newPost.save();
-      res.status(200).json(savedPost);
-    } else {
-      return res.status(403).json('You can create post only with your id');
-    }
+    console.log(newPost);
+    const savedPost = await newPost.save();
+    res.status(200).json(savedPost);
   } catch (err) {
     res.status(500).json(err);
   }
