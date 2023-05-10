@@ -6,24 +6,6 @@ import $api from '../../../http';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import AuthService from '../../../services/AuthService';
 
-// export const fetchUsers = () => async (dispatch: AppDispatch) => {
-//   try {
-//     dispatch(userSlice.actions.useFetching());
-//     const response = await $api.get<IUser>('/users/645901f9a088ecbb1141b0d7');
-//     dispatch(userSlice.actions.useFetchingSuccess(response.data));
-//   } catch (e: any) {
-//     dispatch(userSlice.actions.useFetchingError(e.message));
-//   }
-// };
-
-// export const updateUser = createAsyncThunk('user/fetch', async (_, thunkAPI) => {
-//   try {
-//     const response = await $api.get<IUser>('/users/645901f9a088ecbb1141b0d7');
-//     return response.data;
-//   } catch (e) {
-//     return thunkAPI.rejectWithValue('Нет польвателей');
-//   }
-// });
 interface loginProps {
   email: string;
   password: string;

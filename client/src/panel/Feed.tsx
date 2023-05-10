@@ -6,6 +6,8 @@ import {
   PanelHeader,
   PanelHeaderBack,
   Placeholder,
+  ScreenSpinner,
+  Title,
 } from '@vkontakte/vkui';
 import { Icon56NewsfeedOutline } from '@vkontakte/icons';
 import Post from '../components/Post';
@@ -14,23 +16,27 @@ import { useRouter } from '@happysanta/router';
 import Navbar from '../components/Navbar';
 // import { posts } from '../dummyData/Posts';
 import axios from 'axios';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { fetchPost } from '../store/reducers/Post/PostActionCreator';
 
 const Feed = (props: PanelIDProps) => {
-  const [posts, setPosts] = useState();
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     const res = await axios.get('posts/timeline/all');
-  //     console.log(res);
-  //   };
-  //   fetchPosts();
-  // }, []);
+  const [limit, setLimit] = useState<number>(1);
+  const { posts, isLoading, error } = useAppSelector(
+    (state) => state.postReducer
+  );
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchPost(limit));
+  }, [limit]);
   return (
     <Panel id={props.id}>
       <Navbar text="Новости" />
       <CreatePost></CreatePost>
-      {/* {posts.map((post) => (
-        <Post key={post.id} {...post} />
-      ))} */}
+
+      {error && <Title>{error}</Title>}
+      {posts && posts.map((post) => <Post key={post._id} {...post} />)}
+      {isLoading && <ScreenSpinner state="loading" />}
+      <div onScroll={() => setLimit(limit + 1)}></div>
     </Panel>
   );
 };

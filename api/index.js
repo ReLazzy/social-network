@@ -19,7 +19,8 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
 
 //middleware
 app.use(express.json());
-app.use(helmet());
+
+app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
 app.use(morgan('common'));
 app.use(
   cors({
@@ -27,7 +28,7 @@ app.use(
     origin: process.env.HOST_URL,
   })
 );
-app.use('/images', express.static(path.join(__dirname, 'public/images')));
+app.use('/images', express.static(path.join(__dirname, '/public/images')));
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

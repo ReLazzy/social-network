@@ -1,7 +1,11 @@
 export interface ReseivedPostType {
+  name: string;
+  lastname: string;
+  profilePicture: string;
   userId: string;
-  id: string;
-  disc?: string;
+  _id: string;
+  desc?: string;
   image?: string;
-  likes: [];
+  likes: string[];
+  time: String;
 }

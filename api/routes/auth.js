@@ -47,6 +47,7 @@ router.post('/register', async (req, res) => {
     return res.json({
       message: 'Пользователь успешно зарегистрирован',
       token,
+      id: newUser._id,
       username: newUser.username,
     });
   } catch (err) {
@@ -61,6 +62,7 @@ router.post('/check', authMiddleware, async (req, res) => {
     const user = await User.findOne({ username: req.user.username });
     return res.status(200).json({
       username: req.user.username,
+      id: req.user.id,
       followers: user.followers,
       followings: user.followings,
     });
@@ -90,6 +92,7 @@ router.post('/login', async (req, res) => {
     return res.json({
       token,
       username: user.username,
+      id: user._id,
       followers: user.followers,
       followings: user.followings,
     });

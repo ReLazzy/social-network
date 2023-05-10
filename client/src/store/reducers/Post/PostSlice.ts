@@ -3,14 +3,17 @@ import {
   FriendType,
   FriendsResponse,
 } from '../../../types/modals/friendsResponse';
-import { addPost } from './PostActionCreator';
+import { addPost, fetchPost, likePost } from './PostActionCreator';
+import { ReseivedPostType } from '../../../types/Post';
 
-interface UploadState {
+interface PostsState {
+  posts: ReseivedPostType[];
   isLoading: boolean;
   error: string;
 }
 
-const initialState: UploadState = {
+const initialState: PostsState = {
+  posts: [],
   isLoading: false,
   error: '',
 };
@@ -28,6 +31,35 @@ export const postSlice = createSlice({
       state.error = '';
     },
     [addPost.rejected.type](state, action: PayloadAction<string>) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    [fetchPost.pending.type](state) {
+      state.isLoading = true;
+    },
+    [fetchPost.fulfilled.type](
+      state,
+      action: PayloadAction<ReseivedPostType[]>
+    ) {
+      state.posts = action.payload;
+      state.isLoading = false;
+      state.error = '';
+    },
+    [fetchPost.rejected.type](state, action: PayloadAction<string>) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    [likePost.pending.type](state) {
+      state.isLoading = true;
+    },
+
+    [likePost.fulfilled.type](state) {
+      state.isLoading = false;
+      state.error = '';
+    },
+    [likePost.rejected.type](state, action: PayloadAction<string>) {
       state.isLoading = false;
       state.error = action.payload;
     },

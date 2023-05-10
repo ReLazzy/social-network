@@ -38,11 +38,11 @@ const UserSchema = new mongoose.Schema(
     },
     profilePicture: {
       type: String,
-      default: '',
+      default: 'avatar.png',
     },
     coverPicture: {
       type: String,
-      default: '',
+      default: 'background.jpg',
     },
     followers: {
       type: Array,

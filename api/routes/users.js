@@ -23,20 +23,6 @@ router.put('/update', authMiddleware, async (req, res) => {
   }
 });
 
-//delete user
-router.delete('/delete', authMiddleware, async (req, res) => {
-  if (req.user.id === req.params.id) {
-    try {
-      await User.findByIdAndDelete(req.params.id);
-      res.status(200).json('Account has been deleted');
-    } catch (err) {
-      return res.status(500).json(err);
-    }
-  } else {
-    return res.status(403).json('You can delete only your account!');
-  }
-});
-
 //get a user by username
 router.post('/username', authMiddleware, async (req, res) => {
   try {
@@ -47,7 +33,22 @@ router.post('/username', authMiddleware, async (req, res) => {
     res.status(200).json(other);
   } catch (err) {
     console.log(err);
-    console.log('Пизда');
+
+    res.status(500).json(err);
+  }
+});
+
+//get a user by username
+router.post('/id', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.body;
+    const user = await User.findById({ id });
+    console.log(user);
+    const { password, updatedAt, isAdmin, createdAt, ...other } = user._doc;
+    res.status(200).json(other);
+  } catch (err) {
+    console.log(err);
+
     res.status(500).json(err);
   }
 });

@@ -14,6 +14,7 @@ import {
 } from '../../../types/modals/authResponse';
 
 interface AuthState {
+  id: string;
   username: string;
   isAuth: boolean;
 
@@ -24,6 +25,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
+  id: '',
   username: '',
   followers: [],
   followings: [],
@@ -42,6 +44,7 @@ export const authSlice = createSlice({
     },
     [checkUser.fulfilled.type](state, action: PayloadAction<AuthResponse>) {
       state.username = action.payload.username;
+      state.id = action.payload.id;
       state.followers = action.payload.followers;
       state.followings = action.payload.followings;
       state.error = '';
@@ -55,6 +58,7 @@ export const authSlice = createSlice({
     },
     [loginUser.fulfilled.type](state, action: PayloadAction<AuthResponse>) {
       state.username = action.payload.username;
+      state.id = action.payload.id;
       state.followers = action.payload.followers;
       state.followings = action.payload.followings;
       state.isLoading = false;
@@ -69,9 +73,10 @@ export const authSlice = createSlice({
     [registerUser.pending.type](state) {
       state.isLoading = true;
     },
-    [registerUser.fulfilled.type](state, action: PayloadAction<string>) {
+    [registerUser.fulfilled.type](state, action: PayloadAction<AuthResponse>) {
+      state.id = action.payload.id;
       state.isLoading = false;
-      state.username = action.payload;
+      state.username = action.payload.username;
       state.error = '';
       state.isAuth = true;
     },

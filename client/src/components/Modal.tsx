@@ -18,12 +18,9 @@ const Modal = () => {
       activeModal={location.getModalId()}
       onClose={() => router.popPage()}
     >
-      {/* <ModalPage id={MODAL_EDIT_POST}>
-        {post && (
-          <Group header={<Header mode="secondary">Пост</Header>}></Group>
-        )}
-      </ModalPage>
-      <ModalPage id={MODAL_EDIT_PROFILE}>
+      {/* <ModalEdit id={MODAL_EDIT_PROFILE} /> */}
+      {/* 
+      <ModalPage >
         <Group header={<Header mode="secondary">Профиль</Header>}></Group>
       </ModalPage> */}
     </ModalRoot>

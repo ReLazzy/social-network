@@ -5,17 +5,22 @@ const authMiddleware = require('../middlewaree/authMiddleware');
 //create a post
 
 router.post('/', authMiddleware, async (req, res) => {
+  const user = await User.findOne({ username: req.user.username });
   const newPost = new Post({
+    name: user.name,
+    lastname: user.lastname,
+    profilePicture: user.profilePicture,
     userId: req.user.id,
     desc: req.body.desc,
     img: req.body.image,
   });
-  console.log(req.body);
+
   try {
     console.log(newPost);
     const savedPost = await newPost.save();
-    res.status(200).json(savedPost);
+    res.status(200).json({ message: 'Пост сохранен' });
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });
@@ -51,17 +56,20 @@ router.delete('/:id', authMiddleware, async (req, res) => {
 });
 //like / dislike a post
 
-router.put('/:id/like', authMiddleware, async (req, res) => {
+router.post('/like', authMiddleware, async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const { idPanel } = req.body;
+    const post = await Post.findOne({ _id: idPanel });
+    console.log(post);
     if (!post.likes.includes(req.user.id)) {
-      await post.updateOne({ $push: { likes: req.body.userId } });
-      res.status(200).json('The post has been liked');
+      await post.updateOne({ $push: { likes: req.user.id } });
+      res.status(200).json('like');
     } else {
       await post.updateOne({ $pull: { likes: req.user.id } });
-      res.status(200).json('The post has been disliked');
+      res.status(200).json('unlike');
     }
   } catch (err) {
+    console.log('11', err);
     res.status(500).json(err);
   }
 });
@@ -78,16 +86,23 @@ router.get('/:id', authMiddleware, async (req, res) => {
 
 //get timeline posts
 
-router.get('/timeline/all', authMiddleware, async (req, res) => {
+router.post('/timeline/all', authMiddleware, async (req, res) => {
   try {
     const currentUser = await User.findById(req.user.id);
-    const userPosts = await Post.find({ userId: currentUser._id });
+    const limit = req.body.limit;
+    const userPosts = await Post.find({ userId: currentUser._id })
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
     const friendPosts = await Promise.all(
       currentUser.followings.map((friendId) => {
-        return Post.find({ userId: friendId });
+        return Post.find({ userId: friendId })
+          .limit(limit)
+          .sort({ createdAt: -1 });
       })
     );
-    res.json(userPosts.concat(...friendPosts));
+    const allPost = userPosts.concat(...friendPosts);
+    res.json({ allPost });
   } catch (err) {
     res.status(500).json(err);
   }

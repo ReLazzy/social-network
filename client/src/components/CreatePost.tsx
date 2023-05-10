@@ -12,7 +12,6 @@ import {
   ScreenSpinner,
   Title,
 } from '@vkontakte/vkui';
-import { PostProps } from './Post';
 
 import { useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';

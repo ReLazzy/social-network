@@ -2,7 +2,11 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { IUser } from '../../../types/modals/IUser';
 import { UserType } from '../../../types/User';
 import { ReseivedPostType } from '../../../types/Post';
-import { getUserByUsername } from './UserActionCreators';
+import {
+  getUserById,
+  getUserByUsername,
+  updateUserFunc,
+} from './UserActionCreators';
 
 interface UserState {
   user: UserType;
@@ -28,6 +32,18 @@ export const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
+    [updateUserFunc.pending.type](state) {
+      state.isLoading = true;
+    },
+    [updateUserFunc.fulfilled.type](state, action: PayloadAction<UserType>) {
+      state.user = action.payload;
+      state.isLoading = false;
+      state.error = '';
+    },
+    [updateUserFunc.rejected.type](state, action: PayloadAction<string>) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
     [getUserByUsername.pending.type](state) {
       state.isLoading = true;
     },
@@ -38,6 +54,20 @@ export const userSlice = createSlice({
       state.error = '';
     },
     [getUserByUsername.rejected.type](state, action: PayloadAction<string>) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    [getUserById.pending.type](state) {
+      state.isLoading = true;
+    },
+    [getUserById.fulfilled.type](state, action: PayloadAction<UserType>) {
+      state.user = action.payload;
+
+      state.isLoading = false;
+      state.error = '';
+    },
+    [getUserById.rejected.type](state, action: PayloadAction<string>) {
       state.isLoading = false;
       state.error = action.payload;
     },

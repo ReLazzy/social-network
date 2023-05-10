@@ -17,15 +17,13 @@ const Head = (user: UserType) => {
     (state) => state.authReducer
   );
   const dispatch = useAppDispatch();
-  console.log(Array.isArray(followings));
-  console.log(followings);
 
   const [foll, setFollow] = useState<boolean>(followings.includes(user._id));
 
   const location = useLocation();
   const params = location.getParams();
   const id = params.id;
-
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const currentYear = new Date();
   const profileYear = new Date(user.birthday);
   const m = currentYear.getMonth() - profileYear.getMonth();
@@ -40,16 +38,11 @@ const Head = (user: UserType) => {
   return (
     <Group>
       <div className={style.container}>
-        <img
-          alt="fon"
-          src="https://sun9-43.userapi.com/etNQHi8548036PMIOBSZHF7adBCzZCAyBh0DQQ/vo0ndN0E82A.jpg"
-        />
+        <img alt="fon" src={user.coverPicture && PF + user.coverPicture} />
         <div className={style.content}>
           <Avatar
             className={style.avatar}
-            src={
-              'https://sun9-35.userapi.com/impg/A6qGU-NHjJreFcyMytAVuuraRHfu1ixlC7GKkw/2C2nH5_jtVM.jpg?size=720x1080&quality=95&sign=199fcf4910f265cb77b9a82087a17a43&type=album'
-            }
+            src={user.profilePicture && PF + user.profilePicture}
             size={100}
           />
 

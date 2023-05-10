@@ -21,10 +21,7 @@ export default class UserService {
     return $api.post<UserType>('/users/username', { username: username });
   }
 
-  //   static async registation(props: IUser): Promise<AxiosResponse<AuthResponse>> {
-  //     return $api.post<AuthResponse>('/auth/register', { ...props });
-  //   }
-  //   static async check(): Promise<AxiosResponse<AuthResponse>> {
-  //     return $api.post<AuthResponse>('/auth/check');
-  //   }
+  static async getById(id: string): Promise<AxiosResponse<UserType>> {
+    return $api.post<UserType>('/users/id', { id: id });
+  }
 }

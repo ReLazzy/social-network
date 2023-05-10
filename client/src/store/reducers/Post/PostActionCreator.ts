@@ -8,10 +8,35 @@ export const addPost = createAsyncThunk(
   async (post: SendPostType, thunkAPI) => {
     try {
       const response = await PostService.addPost(post);
-
       return response;
     } catch (e: any) {
       return thunkAPI.rejectWithValue('Не удалось создать пост');
+    }
+  }
+);
+
+export const fetchPost = createAsyncThunk(
+  '/fetchPost',
+  async (limit: number, thunkAPI) => {
+    try {
+      const response = await PostService.getFriendsPost(limit);
+
+      return response.data.allPost;
+    } catch (e: any) {
+      return thunkAPI.rejectWithValue('Не удалось создать пост');
+    }
+  }
+);
+export const likePost = createAsyncThunk(
+  '/likePost',
+  async (idPanel: string, thunkAPI) => {
+    try {
+      const response = await PostService.likesPost(idPanel);
+
+      return response.data;
+    } catch (e: any) {
+      console.log(e);
+      return thunkAPI.rejectWithValue('Не удалось оценить запись');
     }
   }
 );
