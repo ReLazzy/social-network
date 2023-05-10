@@ -20,7 +20,7 @@ const Head = (user: UserType) => {
   console.log(Array.isArray(followings));
   console.log(followings);
 
-  const [follow, setFollow] = useState<boolean>(followings.includes(user._id));
+  const [foll, setFollow] = useState<boolean>(followings.includes(user._id));
 
   const location = useLocation();
   const params = location.getParams();
@@ -79,7 +79,7 @@ const Head = (user: UserType) => {
             >
               Редактировать
             </Button>
-          ) : follow ? (
+          ) : foll ? (
             <Button
               loading={isLoading}
               onClick={() => {

@@ -77,27 +77,37 @@ router.post('/friends', authMiddleware, async (req, res) => {
   }
 });
 
-// router.post('/search', authMiddleware, async (req, res) => {
-//   try {
-//     const search = req.body.search;
-//     if (search !== '') {
-//       const List = await User.find(
-//         { $text: { $search: search } },
-//         { score: { $meta: 'textScore' } }
-//       ).sort({ score: { $meta: 'textScore' } });
-//       console.log(List);
-//     } else {
-//       res.status(400).json({ message: 'введите запрос' });
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json(err);
-//   }
-// });
+router.post('/search', authMiddleware, async (req, res) => {
+  try {
+    const search = req.body.search;
+    if (search !== '') {
+      console.log(search);
+      const name = User.find([
+        {
+          $search: {
+            index: 'text',
+            text: {
+              query: '<query>',
+              path: {
+                wildcard: '*',
+              },
+            },
+          },
+        },
+      ]);
+      res.status(200).json({ name });
+    } else {
+      res.status(400).json({ message: 'введите запрос' });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
 
 //follow a user
 
-router.put('/follow', authMiddleware, async (req, res) => {
+router.post('/follow', authMiddleware, async (req, res) => {
   if (req.user.username !== req.body.username) {
     try {
       const user = await User.findOne({ username: req.body.username });
@@ -105,13 +115,14 @@ router.put('/follow', authMiddleware, async (req, res) => {
       if (!user.followers.includes(currentUser._id)) {
         await user.updateOne({ $push: { followers: currentUser._id } });
         await currentUser.updateOne({ $push: { followings: user._id } });
-        const followers = currentUser.followers;
-        const followings = currentUser.followings;
-        res.status(200).json({
-          message: 'user has been followed',
-          followers,
-          followings,
-        });
+
+        const currUser = await User.findOne({ username: req.user.username });
+        const follow = {
+          followers: currUser.followers,
+          followings: currUser.followings,
+        };
+        console.log(follow);
+        res.status(200).json(follow);
       } else {
         res.status(403).json('you allready follow this user');
       }
@@ -126,7 +137,7 @@ router.put('/follow', authMiddleware, async (req, res) => {
 
 //unfollow a user
 
-router.put('/unfollow', authMiddleware, async (req, res) => {
+router.post('/unfollow', authMiddleware, async (req, res) => {
   if (req.user.username !== req.body.username) {
     try {
       const user = await User.findOne({ username: req.body.username });
@@ -134,15 +145,14 @@ router.put('/unfollow', authMiddleware, async (req, res) => {
       if (user.followers.includes(currentUser._id)) {
         await user.updateOne({ $pull: { followers: currentUser._id } });
         await currentUser.updateOne({ $pull: { followings: user._id } });
-        const followers = currentUser.followers;
-        const followings = currentUser.followings;
-        res.status(200).json({
-          message: 'user has been unfollowed',
-          followers,
-          followings,
-        });
+        const currUser = await User.findOne({ username: req.user.username });
+        const follow = {
+          followers: currUser.followers,
+          followings: currUser.followings,
+        };
+        console.log(follow);
+        res.status(200).json(follow);
       } else {
-        console.log('1');
         res.status(403).json('you dont follow this user');
       }
     } catch (err) {
@@ -150,7 +160,6 @@ router.put('/unfollow', authMiddleware, async (req, res) => {
       res.status(500).json(err);
     }
   } else {
-    console.log('2');
     res.status(403).json('you cant unfollow yourself');
   }
 });

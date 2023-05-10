@@ -16,8 +16,9 @@ import {
 interface AuthState {
   username: string;
   isAuth: boolean;
-  followers: string[];
+
   followings: string[];
+  followers: string[];
   isLoading: boolean;
   error: string;
 }
@@ -53,10 +54,10 @@ export const authSlice = createSlice({
       state.isLoading = true;
     },
     [loginUser.fulfilled.type](state, action: PayloadAction<AuthResponse>) {
-      state.isLoading = false;
       state.username = action.payload.username;
       state.followers = action.payload.followers;
       state.followings = action.payload.followings;
+      state.isLoading = false;
       state.error = '';
       state.isAuth = true;
     },
@@ -83,11 +84,11 @@ export const authSlice = createSlice({
       state.isLoading = true;
     },
     [followUser.fulfilled.type](state, action: PayloadAction<followResponse>) {
-      state.isLoading = false;
+      console.log('FUL', action.payload);
       state.followers = action.payload.followers;
       state.followings = action.payload.followings;
+      state.isLoading = false;
       state.error = '';
-      return state;
     },
     [followUser.rejected.type](state, action: PayloadAction<string>) {
       state.isLoading = false;
@@ -101,13 +102,11 @@ export const authSlice = createSlice({
       state,
       action: PayloadAction<followResponse>
     ) {
-      state.isLoading = false;
-
+      console.log('UNF', action.payload);
       state.followers = action.payload.followers;
       state.followings = action.payload.followings;
+      state.isLoading = false;
       state.error = '';
-      state.isAuth = true;
-      return state;
     },
     [unfollowUser.rejected.type](state, action: PayloadAction<string>) {
       state.isLoading = false;
