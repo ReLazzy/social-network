@@ -12,7 +12,7 @@ router.post('/', authMiddleware, async (req, res) => {
     profilePicture: user.profilePicture,
     userId: req.user.id,
     desc: req.body.desc,
-    img: req.body.image,
+    image: req.body.image,
   });
 
   try {
@@ -108,12 +108,14 @@ router.post('/timeline/all', authMiddleware, async (req, res) => {
   }
 });
 
-router.get('/timeline/person', authMiddleware, async (req, res) => {
+router.post('/timeline/person', authMiddleware, async (req, res) => {
   try {
-    const currentUser = await User.findById(req.user.id);
-    const userPosts = await Post.find({ userId: currentUser._id });
+    const currentUser = await User.findOne(req.body.username);
+    const allPost = await Post.find({ userId: currentUser._id }).sort({
+      createdAt: -1,
+    });
 
-    res.json(userPosts);
+    res.json({ allPost });
   } catch (err) {
     res.status(500).json(err);
   }

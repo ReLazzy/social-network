@@ -41,7 +41,12 @@ const CreatePost = () => {
       console.log('Вы клоун?');
       return;
     }
+    console.log(newPost);
+
     dispatch(addPost(newPost));
+    setText('');
+    setFile(undefined);
+    setFileUrl('');
   };
   const handleOnChange = (e: any) => {
     e.preventDefault();

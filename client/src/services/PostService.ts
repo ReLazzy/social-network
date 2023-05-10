@@ -15,6 +15,11 @@ export default class PostService {
   static async getFriendsPost(limit: number): Promise<AxiosResponse<AllData>> {
     return $api.post<AllData>('/posts/timeline/all', limit);
   }
+  static async getPostByUsername(
+    username: string
+  ): Promise<AxiosResponse<AllData>> {
+    return $api.post<AllData>('/posts/timeline/person', username);
+  }
   static async likesPost(postId: string): Promise<AxiosResponse<AllData>> {
     return $api.post<AllData>('/posts/like', { idPanel: postId });
   }

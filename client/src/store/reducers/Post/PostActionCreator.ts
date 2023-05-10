@@ -40,3 +40,15 @@ export const likePost = createAsyncThunk(
     }
   }
 );
+export const getPostUser = createAsyncThunk(
+  '/usernamePost',
+  async (username: string, thunkAPI) => {
+    try {
+      const response = await PostService.getPostByUsername(username);
+
+      return response.data.allPost;
+    } catch (e: any) {
+      return thunkAPI.rejectWithValue('Не удалось создать пост');
+    }
+  }
+);

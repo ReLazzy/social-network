@@ -25,11 +25,17 @@ import { useEffect, useState } from 'react';
 import Head from '../components/Head';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { getUserByUsername } from '../store/reducers/User/UserActionCreators';
+import { getPostUser } from '../store/reducers/Post/PostActionCreator';
 
 const Profile = (props: PanelIDProps) => {
   const { user, isLoading, error } = useAppSelector(
     (state) => state.userReducer
   );
+  const {
+    posts,
+    isLoading: isLoadingPosts,
+    error: errorPosts,
+  } = useAppSelector((state) => state.postReducer);
   const dispatch = useAppDispatch();
 
   const location = useLocation();
@@ -38,6 +44,7 @@ const Profile = (props: PanelIDProps) => {
 
   useEffect(() => {
     dispatch(getUserByUsername(id));
+    dispatch(getPostUser(id));
   }, [id]);
 
   return (
@@ -50,9 +57,9 @@ const Profile = (props: PanelIDProps) => {
           <Head {...user}></Head>
 
           <CreatePost></CreatePost>
-          {/* {posts.map((post) => {
-            if (true) return <Post key={post.id} {...post} />;
-          })} */}
+          {posts.map((post) => {
+            if (true) return <Post key={post._id} {...post} />;
+          })}
         </div>
       )}
     </Panel>

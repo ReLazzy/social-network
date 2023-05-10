@@ -3,8 +3,9 @@ import {
   FriendType,
   FriendsResponse,
 } from '../../../types/modals/friendsResponse';
-import { addPost, fetchPost, likePost } from './PostActionCreator';
+import { addPost, fetchPost, getPostUser, likePost } from './PostActionCreator';
 import { ReseivedPostType } from '../../../types/Post';
+import { AllData } from '../../../services/PostService';
 
 interface PostsState {
   posts: ReseivedPostType[];
@@ -23,6 +24,22 @@ export const postSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
+    [getPostUser.pending.type](state) {
+      state.isLoading = true;
+    },
+    [getPostUser.fulfilled.type](
+      state,
+      action: PayloadAction<ReseivedPostType[]>
+    ) {
+      state.posts = action.payload;
+      state.isLoading = false;
+      state.error = '';
+    },
+    [getPostUser.rejected.type](state, action: PayloadAction<string>) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
     [addPost.pending.type](state) {
       state.isLoading = true;
     },

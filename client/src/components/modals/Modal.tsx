@@ -1,7 +1,8 @@
 import { useLocation, useRouter } from '@happysanta/router';
 import { Group, Header, Input, ModalPage, ModalRoot } from '@vkontakte/vkui';
 import React, { useState } from 'react';
-import { MODAL_EDIT_POST, MODAL_EDIT_PROFILE } from '../routes';
+import { MODAL_EDIT_PROFILE } from '../../routes';
+import ModalEdit from './ModalEdit';
 
 const Modal = () => {
   const location = useLocation();
@@ -18,11 +19,7 @@ const Modal = () => {
       activeModal={location.getModalId()}
       onClose={() => router.popPage()}
     >
-      {/* <ModalEdit id={MODAL_EDIT_PROFILE} /> */}
-      {/* 
-      <ModalPage >
-        <Group header={<Header mode="secondary">Профиль</Header>}></Group>
-      </ModalPage> */}
+      <ModalEdit id={MODAL_EDIT_PROFILE} />
     </ModalRoot>
   );
 };

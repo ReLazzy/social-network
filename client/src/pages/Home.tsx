@@ -35,6 +35,7 @@ import Messages from '../panel/Messages';
 import Profile from '../panel/Profile';
 import {
   PAGE_PROFILE,
+  PANEL_EDIT,
   PANEL_FEED,
   PANEL_FRIENDS,
   PANEL_MESSAGES,
@@ -45,9 +46,10 @@ import {
   VIEW_PROFILE,
 } from '../routes';
 
-import Modal from '../components/Modal';
+import Modal from '../components/modals/Modal';
 import { useDispatch } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import PanelEdit from '../components/modals/ModalEdit';
 
 interface HomeProps {
   activeStory: string;

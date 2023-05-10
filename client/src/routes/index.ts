@@ -9,6 +9,7 @@ export const PAGE_FEED = '/feed';
 export const PAGE_FRIENDS = '/friends';
 export const PAGE_MESSAGES = '/messages';
 export const PAGE_PROFILE = '/profile/:id([A-z]+)';
+export const PAGE_EDIT_PROFILE = '/edit';
 
 export const PANEL_LOGIN = 'login';
 export const PANEL_REGISTRATION = 'registration';
@@ -17,6 +18,7 @@ export const PANEL_FEED = 'feed';
 export const PANEL_FRIENDS = 'friends';
 export const PANEL_MESSAGES = 'messages';
 export const PANEL_PROFILE = 'profile';
+export const PANEL_EDIT = 'edit';
 
 export const VIEW_AUTH = 'view_auth';
 
@@ -25,7 +27,7 @@ export const VIEW_FRIENDS = 'friends';
 export const VIEW_MESSAGES = 'messages';
 export const VIEW_PROFILE = 'profile';
 
-export const MODAL_EDIT_POST = 'edit_post/:idPost([0-9]+)';
+// export const MODAL_EDIT_POST = 'edit_post/:idPost([0-9]+)';
 export const MODAL_EDIT_PROFILE = 'edit_profile';
 
 export const publicRoutes = {

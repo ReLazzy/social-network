@@ -20,10 +20,9 @@ import {
 } from '@vkontakte/vkui';
 
 import style from './Post.module.css';
-import { useEffect, useState } from 'react';
-import { UserType } from '../types/User';
+
 import { useRouter } from '@happysanta/router';
-import { MODAL_EDIT_POST } from '../routes';
+
 import { ReseivedPostType } from '../types/Post';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { getUserById } from '../store/reducers/User/UserActionCreators';
@@ -51,7 +50,6 @@ const Post = (props: ReseivedPostType) => {
     setLike(isLiked ? like - 1 : like + 1);
     setIsLiked(!isLiked);
   };
-  console.log(PF, props.image);
 
   return (
     <Group>
@@ -89,13 +87,7 @@ const Post = (props: ReseivedPostType) => {
               </div>
               <Icon28ShareOutline onClick={() => console.log(props._id)} />
             </div>
-            {props.userId === id && (
-              <Icon28EditOutline
-                onClick={() =>
-                  router.pushModal(MODAL_EDIT_POST, { idPost: `${props._id}` })
-                }
-              />
-            )}
+            {props.userId === id && <Icon28EditOutline />}
           </div>
         </div>
       )}

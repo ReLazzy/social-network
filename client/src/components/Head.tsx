@@ -4,7 +4,7 @@ import { UserType } from '../types/User';
 import style from './Head.module.css';
 
 import { useLocation, useRouter } from '@happysanta/router';
-import { MODAL_EDIT_PROFILE } from '../routes';
+import { MODAL_EDIT_PROFILE, PAGE_EDIT_PROFILE } from '../routes';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import {
   followUser,
@@ -42,7 +42,9 @@ const Head = (user: UserType) => {
         <div className={style.content}>
           <Avatar
             className={style.avatar}
-            src={user.profilePicture && PF + user.profilePicture}
+            src={
+              user.profilePicture ? PF + user.profilePicture : PF + 'avatar.png'
+            }
             size={100}
           />
 
@@ -61,6 +63,7 @@ const Head = (user: UserType) => {
               }}
             >
               {user.city}
+              <br />
               Возраст: {curentAge}
             </Text>
           </div>
