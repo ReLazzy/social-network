@@ -25,9 +25,9 @@ import { useRouter } from '@happysanta/router';
 
 import { ReseivedPostType } from '../types/Post';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { getUserById } from '../store/reducers/User/UserActionCreators';
-import PostService from '../services/PostService';
+
 import { likePost } from '../store/reducers/Post/PostActionCreator';
+import { useState } from 'react';
 
 const Post = (props: ReseivedPostType) => {
   const router = useRouter();
