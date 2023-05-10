@@ -58,42 +58,42 @@ router.post('/friends', authMiddleware, async (req, res) => {
     const followers = user.followers;
     const followings = user.followings;
     const friendsIdList = followers.filter((x) => followings.indexOf(x) !== -1);
-    const friendsList = [];
+    const friendslist = [];
 
     for (let id of friendsIdList) {
       const user = await User.findById(id);
-      friendsList.push({
+      friendslist.push({
+        _id: user._id,
         username: user.username,
         name: user.name,
         lastname: user.lastname,
         profilePicture: user.profilePicture,
       });
     }
-
-    console.log('2', friendsList);
-    res.status(200).json({ friendsList });
+    console.log(friendslist);
+    res.status(200).json({ friendslist });
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-router.post('/search', authMiddleware, async (req, res) => {
-  try {
-    const search = req.body.search;
-    if (search !== '') {
-      const List = await User.find(
-        { $text: { $search: search } },
-        { score: { $meta: 'textScore' } }
-      ).sort({ score: { $meta: 'textScore' } });
-      console.log(List);
-    } else {
-      res.status(400).json({ message: 'введите запрос' });
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
+// router.post('/search', authMiddleware, async (req, res) => {
+//   try {
+//     const search = req.body.search;
+//     if (search !== '') {
+//       const List = await User.find(
+//         { $text: { $search: search } },
+//         { score: { $meta: 'textScore' } }
+//       ).sort({ score: { $meta: 'textScore' } });
+//       console.log(List);
+//     } else {
+//       res.status(400).json({ message: 'введите запрос' });
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json(err);
+//   }
+// });
 
 //follow a user
 
@@ -105,10 +105,12 @@ router.put('/follow', authMiddleware, async (req, res) => {
       if (!user.followers.includes(currentUser._id)) {
         await user.updateOne({ $push: { followers: currentUser._id } });
         await currentUser.updateOne({ $push: { followings: user._id } });
+        const followers = currentUser.followers;
+        const followings = currentUser.followings;
         res.status(200).json({
           message: 'user has been followed',
-          followers: currentUser.followers,
-          followings: currentUser.followings,
+          followers,
+          followings,
         });
       } else {
         res.status(403).json('you allready follow this user');
@@ -132,10 +134,12 @@ router.put('/unfollow', authMiddleware, async (req, res) => {
       if (user.followers.includes(currentUser._id)) {
         await user.updateOne({ $pull: { followers: currentUser._id } });
         await currentUser.updateOne({ $pull: { followings: user._id } });
+        const followers = currentUser.followers;
+        const followings = currentUser.followings;
         res.status(200).json({
           message: 'user has been unfollowed',
-          followers: currentUser.followers,
-          followings: currentUser.followings,
+          followers,
+          followings,
         });
       } else {
         console.log('1');

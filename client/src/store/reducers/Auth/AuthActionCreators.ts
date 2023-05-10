@@ -73,7 +73,11 @@ export const followUser = createAsyncThunk(
   async (username: string, thunkAPI) => {
     try {
       const response = await AuthService.follow(username);
-      return response.data;
+      const { followers, followings } = response.data;
+      return {
+        followers: followers,
+        followings: followings,
+      };
     } catch (e: any) {
       return thunkAPI.rejectWithValue('Не удалось подписаться');
     }
@@ -84,7 +88,11 @@ export const unfollowUser = createAsyncThunk(
   async (username: string, thunkAPI) => {
     try {
       const response = await AuthService.unfollow(username);
-      return response.data;
+      const { followers, followings } = response.data;
+      return {
+        followers: followers,
+        followings: followings,
+      };
     } catch (e: any) {
       return thunkAPI.rejectWithValue('Не удалось отписаться');
     }

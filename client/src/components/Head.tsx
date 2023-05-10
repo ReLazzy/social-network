@@ -13,7 +13,9 @@ import {
 
 const Head = (user: UserType) => {
   const router = useRouter();
-  const { username, followings } = useAppSelector((state) => state.authReducer);
+  const { username, followings, isLoading } = useAppSelector(
+    (state) => state.authReducer
+  );
   const dispatch = useAppDispatch();
   console.log(Array.isArray(followings));
   console.log(followings);
@@ -30,8 +32,11 @@ const Head = (user: UserType) => {
   const d =
     m < 0 || (m === 0 && currentYear.getDate() < profileYear.getDate()) ? 1 : 0;
   const y = currentYear.getFullYear() - profileYear.getFullYear();
-  const curentAge = y - d;
 
+  const curentAge = y - d;
+  useEffect(() => {
+    setFollow(followings.includes(user._id));
+  }, [followings]);
   return (
     <Group>
       <div className={style.container}>
@@ -76,9 +81,9 @@ const Head = (user: UserType) => {
             </Button>
           ) : follow ? (
             <Button
+              loading={isLoading}
               onClick={() => {
                 dispatch(unfollowUser(id));
-                setFollow(!follow);
               }}
               style={{ height: '35px' }}
               mode="outline"
@@ -87,9 +92,9 @@ const Head = (user: UserType) => {
             </Button>
           ) : (
             <Button
+              loading={isLoading}
               onClick={() => {
                 dispatch(followUser(id));
-                setFollow(!follow);
               }}
               style={{ height: '35px' }}
               mode="outline"

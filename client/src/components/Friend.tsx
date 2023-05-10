@@ -1,10 +1,15 @@
 import { Avatar, Button, ButtonGroup, SimpleCell, Text } from '@vkontakte/vkui';
 
 import style from './Friend.module.css';
+import { FriendType, FriendsResponse } from '../types/modals/friendsResponse';
+import { useRouter } from '@happysanta/router';
+import { PAGE_PROFILE } from '../routes';
 
-const Friend = () => {
+const Friend = (props: FriendType) => {
+  const router = useRouter();
   return (
     <SimpleCell
+      onClick={() => router.pushPage(PAGE_PROFILE, { id: `${props.username}` })}
       before={
         <Avatar
           src={
@@ -19,7 +24,9 @@ const Friend = () => {
       }
     >
       <div className={style.content}>
-        <Text>Рустам Назирович</Text>
+        <Text>
+          {props.name} {props.lastname}
+        </Text>
       </div>
     </SimpleCell>
   );

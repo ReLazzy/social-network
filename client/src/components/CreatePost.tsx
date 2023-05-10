@@ -13,6 +13,7 @@ import {
 import { PostProps } from './Post';
 
 import { useRef, useState } from 'react';
+import { useAppSelector } from '../hooks/redux';
 
 const CreatePost = () => {
   // const post: PostProps = {
@@ -39,7 +40,9 @@ const CreatePost = () => {
       setImage(file);
     }
   };
-
+  const { username, followings, isLoading } = useAppSelector(
+    (state) => state.authReducer
+  );
   return (
     <Group>
       <FormLayout>
@@ -60,7 +63,9 @@ const CreatePost = () => {
               Фотография
             </File>
             <Button
-              onClick={() => {}}
+              onClick={() => {
+                console.log(followings);
+              }}
               mode="outline"
               size="m"
               after={<Icon24SendOutline />}

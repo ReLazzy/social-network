@@ -84,10 +84,10 @@ export const authSlice = createSlice({
     },
     [followUser.fulfilled.type](state, action: PayloadAction<followResponse>) {
       state.isLoading = false;
-
       state.followers = action.payload.followers;
       state.followings = action.payload.followings;
       state.error = '';
+      return state;
     },
     [followUser.rejected.type](state, action: PayloadAction<string>) {
       state.isLoading = false;
@@ -107,6 +107,7 @@ export const authSlice = createSlice({
       state.followings = action.payload.followings;
       state.error = '';
       state.isAuth = true;
+      return state;
     },
     [unfollowUser.rejected.type](state, action: PayloadAction<string>) {
       state.isLoading = false;

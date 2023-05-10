@@ -1,7 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import userReducer from './reducers/User/UserSlice';
 import authReducer from './reducers/Auth/AuthSlice';
+import friendsReducer from './reducers/Friends/FriendSlice';
 const rootReducer = combineReducers({
+  friendsReducer,
   userReducer,
   authReducer,
 });
