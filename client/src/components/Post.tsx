@@ -58,7 +58,13 @@ const Post = (props: ReseivedPostType) => {
       {props && (
         <div className={style.container}>
           <div className={style.author}>
-            <Avatar src={PF + props.profilePicture} />
+            <Avatar
+              src={
+                props.profilePicture
+                  ? PF + props.profilePicture
+                  : PF + 'avatar.png'
+              }
+            />
             <div>
               <Headline weight="2">
                 {props.name} {props.lastname}

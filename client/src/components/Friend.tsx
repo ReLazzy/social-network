@@ -6,16 +6,13 @@ import { useRouter } from '@happysanta/router';
 import { PAGE_PROFILE } from '../routes';
 
 const Friend = (props: FriendType) => {
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const router = useRouter();
   return (
     <SimpleCell
       onClick={() => router.pushPage(PAGE_PROFILE, { id: `${props.username}` })}
       before={
-        <Avatar
-          src={
-            'https://sun9-20.userapi.com/impg/LaWkQb5TUc4qBbr-h-BdTre9tT8sly1Sp_G3gA/lgsPHbG8Tq8.jpg?size=531x415&quality=96&sign=ac5fab84e732e4a3bffec2261080b01c&type=album'
-          }
-        />
+        <Avatar src={props.profilePicture && PF + props.profilePicture} />
       }
       after={
         <Button mode="outline" size="s">

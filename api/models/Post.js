@@ -16,6 +16,7 @@ const PostSchema = new mongoose.Schema(
     },
     profilePicture: {
       type: String,
+      default: 'avatar.png',
     },
     desc: {
       type: String,

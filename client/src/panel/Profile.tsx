@@ -51,7 +51,7 @@ const Profile = (props: PanelIDProps) => {
     <Panel id={props.id}>
       <Navbar text="Профиль" />
       {error && <Title>{error}</Title>}
-      {isLoading && <ScreenSpinner state="loading" />}
+      {(isLoading || isLoadingPosts) && <ScreenSpinner state="loading" />}
       {user && !isLoading && (
         <div>
           <Head {...user}></Head>

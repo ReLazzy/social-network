@@ -25,8 +25,8 @@ import { PanelIDProps } from '../../types/Panel';
 const ModalEdit = (props: PanelIDProps) => {
   const dispatch = useAppDispatch();
   const { isLoading, error } = useAppSelector((state) => state.userReducer);
-  const [password, setName] = useState<string>('');
-  const [name, setPassword] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>('');
   const [lastname, setLastName] = useState<string>('');
   const [city, setCity] = useState<string>('');
 
@@ -66,7 +66,7 @@ const ModalEdit = (props: PanelIDProps) => {
       const fileName = Date.now() + file.name;
       setFileUrl(fileName);
       data.append('name', fileName);
-      data.append('file', String(file));
+      data.append('file', file);
       dispatch(uploadImage(data));
     }
   };
@@ -95,6 +95,7 @@ const ModalEdit = (props: PanelIDProps) => {
               placeholder="Имя"
             />
           </FormItem>
+
           <FormItem>
             <Input
               value={lastname}

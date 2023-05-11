@@ -18,7 +18,7 @@ export default class PostService {
   static async getPostByUsername(
     username: string
   ): Promise<AxiosResponse<AllData>> {
-    return $api.post<AllData>('/posts/timeline/person', username);
+    return $api.post<AllData>('/posts/timeline/person', { username: username });
   }
   static async likesPost(postId: string): Promise<AxiosResponse<AllData>> {
     return $api.post<AllData>('/posts/like', { idPanel: postId });

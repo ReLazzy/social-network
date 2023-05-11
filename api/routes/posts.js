@@ -69,7 +69,6 @@ router.post('/like', authMiddleware, async (req, res) => {
       res.status(200).json('unlike');
     }
   } catch (err) {
-    console.log('11', err);
     res.status(500).json(err);
   }
 });
@@ -110,7 +109,10 @@ router.post('/timeline/all', authMiddleware, async (req, res) => {
 
 router.post('/timeline/person', authMiddleware, async (req, res) => {
   try {
-    const currentUser = await User.findOne(req.body.username);
+    const { username } = req.body;
+
+    const currentUser = await User.findOne({ username });
+
     const allPost = await Post.find({ userId: currentUser._id }).sort({
       createdAt: -1,
     });

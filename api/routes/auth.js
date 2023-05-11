@@ -22,7 +22,6 @@ router.post('/register', async (req, res) => {
     const candidateUser = await User.findOne({ username });
     const candidateMail = await User.findOne({ email });
     if (candidateUser || candidateMail) {
-      console.log('11');
       return res
         .status(400)
         .json({ message: 'Пользователь с таким именем/почтой уже существует' });
