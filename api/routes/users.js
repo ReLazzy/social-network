@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
+const Post = require('../models/Post');
 const authMiddleware = require('../middlewaree/authMiddleware');
 
 //update user
@@ -17,8 +18,10 @@ router.put('/update', authMiddleware, async (req, res) => {
     const user = await User.findByIdAndUpdate(req.user.id, {
       $set: req.body,
     });
-    const newUser = await User.findById(req.user.id);
-    const { password, updatedAt, isAdmin, createdAt, ...other } = newUser._doc;
+    const updateUser = await User.findById(req.user.id);
+
+    const { password, updatedAt, isAdmin, createdAt, ...other } =
+      updateUser._doc;
     res.status(200).json(other);
   } catch (err) {
     return res.status(500).json({ message: 'Акаунт не удалось обновить' });

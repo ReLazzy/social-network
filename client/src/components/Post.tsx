@@ -27,9 +27,12 @@ import { ReseivedPostType } from '../types/Post';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 
 import { likePost } from '../store/reducers/Post/PostActionCreator';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PAGE_PROFILE } from '../routes';
 import { format } from 'timeago.js';
+import UserService from '../services/UserService';
+import { UserType } from '../types/User';
+import { getUserByUsername } from '../store/reducers/User/UserActionCreators';
 
 const Post = (props: ReseivedPostType) => {
   const router = useRouter();
@@ -38,6 +41,7 @@ const Post = (props: ReseivedPostType) => {
 
   const [like, setLike] = useState(props.likes.length);
   const [isLiked, setIsLiked] = useState<boolean>(props.likes.includes(id));
+  const [user, setUser] = useState<UserType>();
   const {
     user: currUser,
     isLoading,
@@ -46,6 +50,21 @@ const Post = (props: ReseivedPostType) => {
 
   const dispatch = useAppDispatch();
 
+  const getUser = async (username: string) => {
+    try {
+      const response = await UserService.getByUserName(username);
+      setUser(response.data);
+      return;
+    } catch (err: any) {
+      return err;
+    }
+  };
+  useEffect(() => {
+    getUser(props.username);
+  }, []);
+
+  // getUser(props.username);
+  // getUser(props.username);
   const likeHandler = () => {
     const postId: string = props._id;
     dispatch(likePost(postId));
@@ -59,26 +78,28 @@ const Post = (props: ReseivedPostType) => {
       {error && <Title>{error}</Title>}
       {props && (
         <div className={style.container}>
-          <div
-            className={style.author}
-            onClick={() =>
-              router.pushPage(PAGE_PROFILE, { id: props.username })
-            }
-          >
-            <Avatar
-              src={
-                props.profilePicture
-                  ? PF + props.profilePicture
-                  : PF + 'avatar.png'
+          {user && (
+            <div
+              className={style.author}
+              onClick={() =>
+                router.pushPage(PAGE_PROFILE, { id: props.username })
               }
-            />
-            <div>
-              <Headline weight="2">
-                {props.name} {props.lastname}
-              </Headline>
-              <Subhead weight="3">{format(props.createdAt)}</Subhead>
+            >
+              <Avatar
+                src={
+                  user.profilePicture
+                    ? PF + user.profilePicture
+                    : PF + 'avatar.png'
+                }
+              />
+              <div>
+                <Headline weight="2">
+                  {user.name} {user.lastname}
+                </Headline>
+                <Subhead weight="3">{format(props.createdAt)}</Subhead>
+              </div>
             </div>
-          </div>
+          )}
           <Text>{props.desc}</Text>
           {props.image && (
             <div className={style.image}>

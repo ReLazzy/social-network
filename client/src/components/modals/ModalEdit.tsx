@@ -55,6 +55,11 @@ const ModalEdit = (props: PanelIDProps) => {
     if (city.length >= 3) updateUser['city'] = city;
     if (fileCover) updateUser['coverPicture'] = fileCoverUrl;
     if (fileProfile) updateUser['profilePicture'] = fileProfileUrl;
+
+    console.log(fileCoverUrl);
+    console.log(fileProfileUrl);
+    console.log(updateUser);
+
     dispatch(updateUserFunc(updateUser));
     router.pushPage(PAGE_PROFILE, { id: `${username}` });
   };

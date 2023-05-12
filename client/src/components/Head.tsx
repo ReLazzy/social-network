@@ -47,12 +47,21 @@ const Head = (user: UserType) => {
   return (
     <Group>
       <div className={style.container}>
-        <img alt="fon" src={user.coverPicture && PF + user.coverPicture} />
+        <img
+          alt="fon"
+          src={
+            user.coverPicture?.length !== 0 && user.coverPicture
+              ? PF + user.coverPicture
+              : PF + 'background.jpg'
+          }
+        />
         <div className={style.content}>
           <Avatar
             className={style.avatar}
             src={
-              user.profilePicture ? PF + user.profilePicture : PF + 'avatar.png'
+              user.profilePicture?.length !== 0 && user.profilePicture
+                ? PF + user.profilePicture
+                : PF + 'avatar.png'
             }
             size={100}
           />
