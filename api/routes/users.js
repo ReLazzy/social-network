@@ -17,7 +17,9 @@ router.put('/update', authMiddleware, async (req, res) => {
     const user = await User.findByIdAndUpdate(req.user.id, {
       $set: req.body,
     });
-    res.status(200).json('Account has been updated');
+    const newUser = await User.findById(req.user.id);
+    const { password, updatedAt, isAdmin, createdAt, ...other } = newUser._doc;
+    res.status(200).json(other);
   } catch (err) {
     return res.status(500).json({ message: 'Акаунт не удалось обновить' });
   }
@@ -28,12 +30,10 @@ router.post('/username', authMiddleware, async (req, res) => {
   try {
     const { username } = req.body;
     const user = await User.findOne({ username });
-    console.log(user);
+
     const { password, updatedAt, isAdmin, createdAt, ...other } = user._doc;
     res.status(200).json(other);
   } catch (err) {
-    console.log(err);
-
     res.status(500).json(err);
   }
 });
@@ -43,12 +43,10 @@ router.post('/id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.body;
     const user = await User.findById({ id });
-    console.log(user);
+
     const { password, updatedAt, isAdmin, createdAt, ...other } = user._doc;
     res.status(200).json(other);
   } catch (err) {
-    console.log(err);
-
     res.status(500).json(err);
   }
 });
@@ -71,7 +69,7 @@ router.post('/friends', authMiddleware, async (req, res) => {
         profilePicture: user.profilePicture,
       });
     }
-    console.log(friendslist);
+
     res.status(200).json({ friendslist });
   } catch (err) {
     res.status(500).json(err);
@@ -101,7 +99,6 @@ router.post('/search', authMiddleware, async (req, res) => {
       res.status(400).json({ message: 'введите запрос' });
     }
   } catch (err) {
-    console.log(err);
     res.status(500).json(err);
   }
 });
@@ -122,13 +119,12 @@ router.post('/follow', authMiddleware, async (req, res) => {
           followers: currUser.followers,
           followings: currUser.followings,
         };
-        console.log(follow);
+
         res.status(200).json(follow);
       } else {
         res.status(403).json('you allready follow this user');
       }
     } catch (err) {
-      console.log(err);
       res.status(500).json(err);
     }
   } else {
@@ -151,13 +147,12 @@ router.post('/unfollow', authMiddleware, async (req, res) => {
           followers: currUser.followers,
           followings: currUser.followings,
         };
-        console.log(follow);
+
         res.status(200).json(follow);
       } else {
         res.status(403).json('you dont follow this user');
       }
     } catch (err) {
-      console.log(err);
       res.status(500).json(err);
     }
   } else {

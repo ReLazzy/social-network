@@ -21,10 +21,13 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { REG_PASS } from '../../constants';
 import { updateUserFunc } from '../../store/reducers/User/UserActionCreators';
 import { PanelIDProps } from '../../types/Panel';
+import { useRouter } from '@happysanta/router';
+import { PAGE_PROFILE } from '../../routes';
 
 const ModalEdit = (props: PanelIDProps) => {
   const dispatch = useAppDispatch();
   const { isLoading, error } = useAppSelector((state) => state.userReducer);
+  const { username } = useAppSelector((state) => state.authReducer);
   const [password, setPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [lastname, setLastName] = useState<string>('');
@@ -34,7 +37,7 @@ const ModalEdit = (props: PanelIDProps) => {
   const [fileProfileUrl, setProfileFileUrl] = useState<string>('');
   const [fileCover, setCoverFile] = useState<Blob | MediaSource>();
   const [fileCoverUrl, setCoverFileUrl] = useState<string>('');
-
+  const router = useRouter();
   const data = new FormData();
   // password: string;
   //   name: string;
@@ -53,6 +56,7 @@ const ModalEdit = (props: PanelIDProps) => {
     if (fileCover) updateUser['coverPicture'] = fileCoverUrl;
     if (fileProfile) updateUser['profilePicture'] = fileProfileUrl;
     dispatch(updateUserFunc(updateUser));
+    router.pushPage(PAGE_PROFILE, { id: `${username}` });
   };
   const handleOnChange = (
     e: any,

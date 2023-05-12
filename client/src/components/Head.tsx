@@ -1,4 +1,11 @@
-import { Avatar, Button, Group, Title, Text } from '@vkontakte/vkui';
+import {
+  Avatar,
+  Button,
+  Group,
+  Title,
+  Text,
+  ScreenSpinner,
+} from '@vkontakte/vkui';
 import React, { useEffect, useRef, useState } from 'react';
 import { UserType } from '../types/User';
 import style from './Head.module.css';
@@ -10,12 +17,14 @@ import {
   followUser,
   unfollowUser,
 } from '../store/reducers/Auth/AuthActionCreators';
+import { error } from 'console';
 
 const Head = (user: UserType) => {
   const router = useRouter();
   const { username, followings, isLoading } = useAppSelector(
     (state) => state.authReducer
   );
+  console.log('head');
   const dispatch = useAppDispatch();
 
   const [foll, setFollow] = useState<boolean>(followings.includes(user._id));
@@ -62,9 +71,8 @@ const Head = (user: UserType) => {
                 color: 'var(--vkui--color_text_secondary)',
               }}
             >
-              {user.city}
-              <br />
-              Возраст: {curentAge}
+              <div>{user.city}</div>
+              <div>Возраст: {curentAge}</div>
             </Text>
           </div>
           {username === id ? (

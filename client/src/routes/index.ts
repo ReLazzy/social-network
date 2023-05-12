@@ -30,7 +30,15 @@ export const VIEW_PROFILE = 'profile';
 // export const MODAL_EDIT_POST = 'edit_post/:idPost([0-9]+)';
 export const MODAL_EDIT_PROFILE = 'edit_profile';
 
-export const publicRoutes = {
+export const publicRoutes = [PAGE_LOGIN, PAGE_AUTH];
+export const privateRoutes = [
+  PAGE_FRIENDS,
+  PAGE_FEED,
+  PAGE_MESSAGES,
+  PAGE_PROFILE,
+];
+
+export const routes = {
   [PAGE_LOGIN]: new Page(PANEL_LOGIN, VIEW_AUTH),
   [PAGE_AUTH]: new Page(PANEL_REGISTRATION, VIEW_AUTH),
   [PAGE_FEED]: new Page(PANEL_FEED, VIEW_FEED),
@@ -38,7 +46,7 @@ export const publicRoutes = {
   [PAGE_MESSAGES]: new Page(PANEL_MESSAGES, VIEW_MESSAGES),
   [PAGE_PROFILE]: new Page(PANEL_PROFILE, VIEW_PROFILE),
 };
-const routes = publicRoutes;
+
 export const router = new Router(routes);
 router.onEnterPage(PAGE_MAIN, () => {
   router.pushPage(PAGE_FEED);

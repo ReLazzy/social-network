@@ -1,4 +1,5 @@
 export interface ReseivedPostType {
+  username: string;
   name: string;
   lastname: string;
   profilePicture: string;
@@ -7,5 +8,5 @@ export interface ReseivedPostType {
   desc?: string;
   image?: string;
   likes: string[];
-  time: String;
+  createdAt: Date;
 }

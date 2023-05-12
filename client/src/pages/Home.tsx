@@ -144,7 +144,6 @@ const Home = (props: HomeProps) => {
               </Cell>
 
               <Cell
-                disabled={activeStory === PANEL_PROFILE}
                 style={
                   activeStory === PANEL_PROFILE
                     ? {

@@ -31,6 +31,7 @@ const Profile = (props: PanelIDProps) => {
   const { user, isLoading, error } = useAppSelector(
     (state) => state.userReducer
   );
+  const { username } = useAppSelector((state) => state.authReducer);
   const {
     posts,
     isLoading: isLoadingPosts,
@@ -46,17 +47,18 @@ const Profile = (props: PanelIDProps) => {
     dispatch(getUserByUsername(id));
     dispatch(getPostUser(id));
   }, [id]);
-
+  console.log('profile');
   return (
     <Panel id={props.id}>
       <Navbar text="Профиль" />
+
       {error && <Title>{error}</Title>}
       {(isLoading || isLoadingPosts) && <ScreenSpinner state="loading" />}
       {user && !isLoading && (
         <div>
           <Head {...user}></Head>
+          {username === id && <CreatePost></CreatePost>}
 
-          <CreatePost></CreatePost>
           {posts.map((post) => {
             if (true) return <Post key={post._id} {...post} />;
           })}

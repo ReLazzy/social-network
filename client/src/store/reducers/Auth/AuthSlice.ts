@@ -89,7 +89,6 @@ export const authSlice = createSlice({
       state.isLoading = true;
     },
     [followUser.fulfilled.type](state, action: PayloadAction<followResponse>) {
-      console.log('FUL', action.payload);
       state.followers = action.payload.followers;
       state.followings = action.payload.followings;
       state.isLoading = false;

@@ -16,9 +16,9 @@ export const updateUserFunc = createAsyncThunk(
   '/update',
   async (props: UpdateUser, thunkAPI) => {
     try {
-      await UserService.update({ ...props });
+      const response = await UserService.update({ ...props });
 
-      return;
+      return response.data;
     } catch (e: any) {
       return thunkAPI.rejectWithValue('Не удалось обновить');
     }

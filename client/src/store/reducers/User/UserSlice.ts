@@ -36,8 +36,8 @@ export const userSlice = createSlice({
       state.isLoading = true;
     },
     [updateUserFunc.fulfilled.type](state, action: PayloadAction<UserType>) {
-      state.user = action.payload;
       state.isLoading = false;
+      state.user = action.payload;
       state.error = '';
     },
     [updateUserFunc.rejected.type](state, action: PayloadAction<string>) {

@@ -20,7 +20,7 @@ import {
   ButtonGroup,
 } from '@vkontakte/vkui';
 import './app.css';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 import {
   PAGE_AUTH,
   PAGE_FEED,
@@ -30,6 +30,7 @@ import {
   PANEL_REGISTRATION,
   VIEW_AUTH,
   VIEW_FEED,
+  publicRoutes,
 } from './routes';
 import Login from './pages/Login';
 import Auth from './pages/Auth';
@@ -51,6 +52,7 @@ function App() {
   // const [lastName, setLastName] = useState('');
   // const [purpose, setPurpose] = useState('');
   // const [showPatronymic, setShowPatronymic] = useState(true);
+
   useEffect(() => {
     dispatch(checkUser());
   }, []);
@@ -59,8 +61,12 @@ function App() {
     else router.pushPage(PAGE_AUTH);
   }, [isAuth]);
   useEffect(() => {
+    const currentPage = location.getPageId();
+    const isPublic = publicRoutes.includes(currentPage);
+
     setActiveStory(location.getViewId());
   }, [location]);
+
   return (
     <AppRoot>
       {isAuth ? (

@@ -85,9 +85,9 @@ router.post('/login', async (req, res) => {
     if (!validPassword) {
       return res.status(400).json({ message: `Введен неверный пароль` });
     }
-    console.log(validPassword);
+
     const token = generateAccessToken(user._id, user.username);
-    console.log(token);
+
     return res.json({
       token,
       username: user.username,
@@ -96,7 +96,6 @@ router.post('/login', async (req, res) => {
       followings: user.followings,
     });
   } catch (err) {
-    console.log(err);
     res.status(500).json(err);
   }
 });

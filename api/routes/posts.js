@@ -7,6 +7,7 @@ const authMiddleware = require('../middlewaree/authMiddleware');
 router.post('/', authMiddleware, async (req, res) => {
   const user = await User.findOne({ username: req.user.username });
   const newPost = new Post({
+    username: user.username,
     name: user.name,
     lastname: user.lastname,
     profilePicture: user.profilePicture,
@@ -16,11 +17,9 @@ router.post('/', authMiddleware, async (req, res) => {
   });
 
   try {
-    console.log(newPost);
     const savedPost = await newPost.save();
     res.status(200).json({ message: 'Пост сохранен' });
   } catch (err) {
-    console.log(err);
     res.status(500).json(err);
   }
 });
@@ -60,7 +59,7 @@ router.post('/like', authMiddleware, async (req, res) => {
   try {
     const { idPanel } = req.body;
     const post = await Post.findOne({ _id: idPanel });
-    console.log(post);
+
     if (!post.likes.includes(req.user.id)) {
       await post.updateOne({ $push: { likes: req.user.id } });
       res.status(200).json('like');

@@ -28,6 +28,8 @@ import { useAppDispatch, useAppSelector } from '../hooks/redux';
 
 import { likePost } from '../store/reducers/Post/PostActionCreator';
 import { useState } from 'react';
+import { PAGE_PROFILE } from '../routes';
+import { format } from 'timeago.js';
 
 const Post = (props: ReseivedPostType) => {
   const router = useRouter();
@@ -57,7 +59,12 @@ const Post = (props: ReseivedPostType) => {
       {error && <Title>{error}</Title>}
       {props && (
         <div className={style.container}>
-          <div className={style.author}>
+          <div
+            className={style.author}
+            onClick={() =>
+              router.pushPage(PAGE_PROFILE, { id: props.username })
+            }
+          >
             <Avatar
               src={
                 props.profilePicture
@@ -69,7 +76,7 @@ const Post = (props: ReseivedPostType) => {
               <Headline weight="2">
                 {props.name} {props.lastname}
               </Headline>
-              <Subhead weight="3">{props.time}</Subhead>
+              <Subhead weight="3">{format(props.createdAt)}</Subhead>
             </div>
           </div>
           <Text>{props.desc}</Text>
@@ -91,7 +98,9 @@ const Post = (props: ReseivedPostType) => {
               <div onClick={likeHandler}>
                 {isLiked ? <Icon28LikeFillRed /> : <Icon28LikeOutline />}
               </div>
-              <Icon28ShareOutline onClick={() => console.log(props._id)} />
+              <Icon28ShareOutline
+                onClick={() => console.log(props.username, currUser)}
+              />
             </div>
             {props.userId === id && <Icon28EditOutline />}
           </div>

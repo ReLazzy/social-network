@@ -68,16 +68,12 @@ export const postSlice = createSlice({
       state.error = action.payload;
     },
 
-    [likePost.pending.type](state) {
-      state.isLoading = true;
-    },
+    [likePost.pending.type](state) {},
 
     [likePost.fulfilled.type](state) {
-      state.isLoading = false;
       state.error = '';
     },
     [likePost.rejected.type](state, action: PayloadAction<string>) {
-      state.isLoading = false;
       state.error = action.payload;
     },
   },
