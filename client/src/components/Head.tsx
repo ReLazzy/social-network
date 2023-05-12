@@ -24,7 +24,7 @@ const Head = (user: UserType) => {
   const { username, followings, isLoading } = useAppSelector(
     (state) => state.authReducer
   );
-  console.log('head');
+
   const dispatch = useAppDispatch();
 
   const [foll, setFollow] = useState<boolean>(followings.includes(user._id));

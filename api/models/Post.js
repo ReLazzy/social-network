@@ -10,18 +10,6 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    name: {
-      type: String,
-      required: true,
-    },
-    lastname: {
-      type: String,
-      required: true,
-    },
-    profilePicture: {
-      type: String,
-      default: 'avatar.png',
-    },
     desc: {
       type: String,
       max: 500,

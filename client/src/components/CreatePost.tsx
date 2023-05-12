@@ -16,15 +16,23 @@ import {
 import { useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { uploadImage } from '../store/reducers/Upload/UploadACtionCreator';
-import { addPost } from '../store/reducers/Post/PostActionCreator';
+import { addPost, fetchPost } from '../store/reducers/Post/PostActionCreator';
+import { useRouter } from '@happysanta/router';
+import { PAGE_FEED } from '../routes';
+import { ReseivedPostType } from '../types/Post';
+import { AsyncThunkAction } from '@reduxjs/toolkit';
 
 export interface SendPostType {
   desc?: string;
   image?: string;
 }
+interface CreatePostProps {
+  update: any;
+}
 
-const CreatePost = () => {
+const CreatePost = (props: CreatePostProps) => {
   const { isLoading, error } = useAppSelector((state) => state.uploadReducer);
+
   const { isLoading: isLoadingCreate, error: errorCreate } = useAppSelector(
     (state) => state.postReducer
   );
@@ -47,6 +55,7 @@ const CreatePost = () => {
     setText('');
     setFile(undefined);
     setFileUrl('');
+    dispatch(props.update);
   };
   const handleOnChange = (e: any) => {
     e.preventDefault();

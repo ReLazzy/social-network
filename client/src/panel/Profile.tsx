@@ -26,6 +26,7 @@ import Head from '../components/Head';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { getUserByUsername } from '../store/reducers/User/UserActionCreators';
 import { getPostUser } from '../store/reducers/Post/PostActionCreator';
+import { ReseivedPostType } from '../types/Post';
 
 const Profile = (props: PanelIDProps) => {
   const { user, isLoading, error } = useAppSelector(
@@ -43,11 +44,15 @@ const Profile = (props: PanelIDProps) => {
   const params = location.getParams();
   const id = params.id;
 
+  const [currentPosts, setCurrentPosts] = useState<ReseivedPostType[]>([]);
+  useEffect(() => {
+    setCurrentPosts(posts);
+  }, [posts]);
   useEffect(() => {
     dispatch(getUserByUsername(id));
     dispatch(getPostUser(id));
   }, [id]);
-  console.log('profile');
+
   return (
     <Panel id={props.id}>
       <Navbar text="Профиль" />
@@ -57,7 +62,9 @@ const Profile = (props: PanelIDProps) => {
       {user && !isLoading && (
         <div>
           <Head {...user}></Head>
-          {username === id && <CreatePost></CreatePost>}
+          {username === id && (
+            <CreatePost update={getPostUser(id)}></CreatePost>
+          )}
 
           {posts.map((post) => {
             if (true) return <Post key={post._id} {...post} />;

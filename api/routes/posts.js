@@ -88,20 +88,20 @@ router.post('/timeline/all', authMiddleware, async (req, res) => {
   try {
     const currentUser = await User.findById(req.user.id);
     const limit = req.body.limit;
-    const userPosts = await Post.find({ userId: currentUser._id })
-      .limit(limit)
-      .sort({ createdAt: -1 });
+    console.log(limit);
 
-    const friendPosts = await Promise.all(
-      currentUser.followings.map((friendId) => {
-        return Post.find({ userId: friendId })
-          .limit(limit)
-          .sort({ createdAt: -1 });
-      })
-    );
-    const allPost = userPosts.concat(...friendPosts);
+    const currentUsers = [req.user.id];
+    const allUsers = currentUsers.concat(currentUser.followings);
+    const friendPosts = await Post.find({ userId: allUsers })
+      .limit(limit)
+      .sort({
+        createdAt: -1,
+      });
+
+    const allPost = [].concat(...friendPosts);
     res.json({ allPost });
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });

@@ -18,25 +18,31 @@ import Navbar from '../components/Navbar';
 import axios from 'axios';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { fetchPost } from '../store/reducers/Post/PostActionCreator';
+import { ReseivedPostType } from '../types/Post';
 
 const Feed = (props: PanelIDProps) => {
-  const [limit, setLimit] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(10);
+  const [currentPosts, setCurrentPosts] = useState<ReseivedPostType[]>([]);
   const { posts, isLoading, error } = useAppSelector(
     (state) => state.postReducer
   );
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchPost(limit));
-  }, [limit]);
+  }, []);
+  useEffect(() => {
+    setCurrentPosts(posts);
+  }, [posts]);
+
   return (
     <Panel id={props.id}>
       <Navbar text="Новости" />
-      <CreatePost></CreatePost>
+      <CreatePost update={fetchPost(limit)}></CreatePost>
 
       {error && <Title>{error}</Title>}
-      {posts && posts.map((post) => <Post key={post._id} {...post} />)}
+      {currentPosts &&
+        currentPosts.map((post, x) => <Post key={post._id} {...post} />)}
       {isLoading && <ScreenSpinner state="loading" />}
-      <div onScroll={() => setLimit(limit + 1)}></div>
     </Panel>
   );
 };

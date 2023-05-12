@@ -13,7 +13,7 @@ export default class PostService {
     return $api.post('/posts', post);
   }
   static async getFriendsPost(limit: number): Promise<AxiosResponse<AllData>> {
-    return $api.post<AllData>('/posts/timeline/all', limit);
+    return $api.post<AllData>('/posts/timeline/all', { limit: limit });
   }
   static async getPostByUsername(
     username: string
