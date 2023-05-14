@@ -10,7 +10,6 @@ import {
 
 interface UserState {
   user: UserType;
-  posts: ReseivedPostType[];
   isLoading: boolean;
   error: string;
 }
@@ -22,7 +21,6 @@ const initialState: UserState = {
     lastname: '',
     birthday: '',
   },
-  posts: [],
   isLoading: false,
   error: '',
 };

@@ -18,9 +18,3 @@
   text-transform: uppercase;
   color: #2688eb;
 }
-.aaaa {
-  display: flex;
-}
-.aaaa > img {
-  flex: 1;
-}

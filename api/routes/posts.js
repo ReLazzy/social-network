@@ -18,7 +18,7 @@ router.post('/', authMiddleware, async (req, res) => {
 
   try {
     const savedPost = await newPost.save();
-    res.status(200).json({ message: 'Пост сохранен' });
+    res.status(200).json(savedPost);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -87,16 +87,23 @@ router.get('/:id', authMiddleware, async (req, res) => {
 router.post('/timeline/all', authMiddleware, async (req, res) => {
   try {
     const currentUser = await User.findById(req.user.id);
-    const limit = req.body.limit;
+    const limit = 5;
+
+    const date = req.body.date;
+    const page = req.body.page;
     console.log(limit);
 
     const currentUsers = [req.user.id];
     const allUsers = currentUsers.concat(currentUser.followings);
-    const friendPosts = await Post.find({ userId: allUsers })
-      .limit(limit)
+    const friendPosts = await Post.find({
+      userId: allUsers,
+      createdAt: { $lt: date },
+    })
       .sort({
         createdAt: -1,
-      });
+      })
+      .skip(limit * page)
+      .limit(limit);
 
     const allPost = [].concat(...friendPosts);
     res.json({ allPost });
@@ -116,7 +123,7 @@ router.post('/timeline/person', authMiddleware, async (req, res) => {
       createdAt: -1,
     });
 
-    res.json({ allPost });
+    res.json({ allPost, username });
   } catch (err) {
     res.status(500).json(err);
   }

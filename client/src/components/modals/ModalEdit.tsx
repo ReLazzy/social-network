@@ -92,13 +92,6 @@ const ModalEdit = (props: PanelIDProps) => {
           </FormItem>
           <FormItem>
             <Input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Пароль"
-            />
-          </FormItem>
-          <FormItem>
-            <Input
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Имя"
@@ -112,11 +105,19 @@ const ModalEdit = (props: PanelIDProps) => {
               placeholder="Фамилия"
             />
           </FormItem>
+
           <FormItem>
             <Input
               value={city}
               onChange={(e) => setCity(e.target.value)}
               placeholder="Город"
+            />
+          </FormItem>
+          <FormItem>
+            <Input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Пароль"
             />
           </FormItem>
 
@@ -147,7 +148,12 @@ const ModalEdit = (props: PanelIDProps) => {
         </FormLayout>
         {fileProfile && (
           <FormItem>
-            <div>
+            <Title>Профиль</Title>
+            <div
+              style={{
+                marginTop: '10px',
+              }}
+            >
               <img
                 style={{
                   borderRadius: '15px',
@@ -162,7 +168,12 @@ const ModalEdit = (props: PanelIDProps) => {
         )}
         {fileCover && (
           <FormItem>
-            <div>
+            <Title>Обложка</Title>
+            <div
+              style={{
+                marginTop: '10px',
+              }}
+            >
               <img
                 style={{
                   borderRadius: '15px',

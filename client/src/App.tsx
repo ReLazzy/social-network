@@ -52,20 +52,22 @@ function App() {
   // const [lastName, setLastName] = useState('');
   // const [purpose, setPurpose] = useState('');
   // const [showPatronymic, setShowPatronymic] = useState(true);
-
+  console.log('activeStory', activeStory);
+  console.log('isAuth', isAuth);
   useEffect(() => {
+    console.log('первый рендер');
+
     dispatch(checkUser());
   }, []);
+
   useEffect(() => {
-    if (isAuth) router.pushPage(PAGE_FEED);
-    else router.pushPage(PAGE_AUTH);
-  }, [isAuth]);
-  useEffect(() => {
+    console.log('смена ауз/локации');
     const currentPage = location.getPageId();
     const isPublic = publicRoutes.includes(currentPage);
-
+    if (!isAuth) !isPublic && router.pushPage(PAGE_AUTH);
+    else isPublic && router.pushPage(PAGE_FEED);
     setActiveStory(location.getViewId());
-  }, [location]);
+  }, [location, isAuth]);
 
   return (
     <AppRoot>

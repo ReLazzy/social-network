@@ -62,7 +62,6 @@ const Home = (props: HomeProps) => {
   const platform = usePlatform();
   const { viewWidth } = useAdaptivityConditionalRender();
 
-  const dispatch = useAppDispatch();
   const onStoryChange = (e: any) => {
     const newActiveStory = e.currentTarget.dataset.story;
     setActiveStory(newActiveStory);

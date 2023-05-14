@@ -29,7 +29,7 @@ const initialState: AuthState = {
   username: '',
   followers: [],
   followings: [],
-  isAuth: false,
+  isAuth: true,
   isLoading: false,
   error: '',
 };
@@ -44,7 +44,7 @@ export const authSlice = createSlice({
     },
     [checkUser.fulfilled.type](state, action: PayloadAction<AuthResponse>) {
       state.username = action.payload.username;
-      state.id = action.payload.id;
+      if (action.payload.id !== state.id) state.id = action.payload.id;
       state.followers = action.payload.followers;
       state.followings = action.payload.followings;
       state.error = '';

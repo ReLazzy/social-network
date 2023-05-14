@@ -68,6 +68,7 @@ const Post = (props: ReseivedPostType) => {
   const likeHandler = () => {
     const postId: string = props._id;
     dispatch(likePost(postId));
+
     setLike(isLiked ? like - 1 : like + 1);
     setIsLiked(!isLiked);
   };

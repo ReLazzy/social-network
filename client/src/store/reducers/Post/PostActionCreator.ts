@@ -8,18 +8,22 @@ export const addPost = createAsyncThunk(
   async (post: SendPostType, thunkAPI) => {
     try {
       const response = await PostService.addPost(post);
-      return response;
+      return response.data;
     } catch (e: any) {
       return thunkAPI.rejectWithValue('Не удалось создать пост');
     }
   }
 );
+interface fetchPostProps {
+  page: number;
+  date: number;
+}
 
 export const fetchPost = createAsyncThunk(
   '/fetchPost',
-  async (limit: number, thunkAPI) => {
+  async (props: fetchPostProps, thunkAPI) => {
     try {
-      const response = await PostService.getFriendsPost(limit);
+      const response = await PostService.getFriendsPost(props.page, props.date);
 
       return response.data.allPost;
     } catch (e: any) {
@@ -40,13 +44,14 @@ export const likePost = createAsyncThunk(
     }
   }
 );
+
 export const getPostUser = createAsyncThunk(
   '/usernamePost',
   async (username: string, thunkAPI) => {
     try {
       const response = await PostService.getPostByUsername(username);
 
-      return response.data.allPost;
+      return response.data;
     } catch (e: any) {
       return thunkAPI.rejectWithValue('Не удалось создать пост');
     }

@@ -6,19 +6,30 @@ import { SendPostType } from '../components/CreatePost';
 import { ReseivedPostType } from '../types/Post';
 export interface AllData {
   allPost: ReseivedPostType[];
+  usernanme?: string;
 }
 
 export default class PostService {
-  static async addPost(post: SendPostType): Promise<AxiosResponse> {
-    return $api.post('/posts', post);
+  static async addPost(
+    post: SendPostType
+  ): Promise<AxiosResponse<ReseivedPostType>> {
+    return $api.post<ReseivedPostType>('/posts', post);
   }
-  static async getFriendsPost(limit: number): Promise<AxiosResponse<AllData>> {
-    return $api.post<AllData>('/posts/timeline/all', { limit: limit });
+  static async getFriendsPost(
+    page: number,
+    date: number
+  ): Promise<AxiosResponse<AllData>> {
+    return $api.post<AllData>('/posts/timeline/all', {
+      page: page,
+      date: date,
+    });
   }
   static async getPostByUsername(
     username: string
   ): Promise<AxiosResponse<AllData>> {
-    return $api.post<AllData>('/posts/timeline/person', { username: username });
+    return $api.post<AllData>('/posts/timeline/person', {
+      username: username,
+    });
   }
   static async likesPost(postId: string): Promise<AxiosResponse<AllData>> {
     return $api.post<AllData>('/posts/like', { idPanel: postId });

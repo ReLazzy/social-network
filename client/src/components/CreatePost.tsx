@@ -26,11 +26,8 @@ export interface SendPostType {
   desc?: string;
   image?: string;
 }
-interface CreatePostProps {
-  update: any;
-}
 
-const CreatePost = (props: CreatePostProps) => {
+const CreatePost = () => {
   const { isLoading, error } = useAppSelector((state) => state.uploadReducer);
 
   const { isLoading: isLoadingCreate, error: errorCreate } = useAppSelector(
@@ -49,13 +46,11 @@ const CreatePost = (props: CreatePostProps) => {
       console.log('Вы клоун?');
       return;
     }
-    console.log(newPost);
 
     dispatch(addPost(newPost));
     setText('');
     setFile(undefined);
     setFileUrl('');
-    dispatch(props.update);
   };
   const handleOnChange = (e: any) => {
     e.preventDefault();
@@ -73,8 +68,6 @@ const CreatePost = (props: CreatePostProps) => {
   return (
     <Group>
       <FormLayout>
-        {error && <Title>{error}</Title>}
-        {errorCreate && <Title>{errorCreate}</Title>}
         <FormItem>
           <Textarea
             value={text}
@@ -83,8 +76,7 @@ const CreatePost = (props: CreatePostProps) => {
             placeholder="Что нового?"
           />
         </FormItem>
-        {isLoading && <ScreenSpinner state="loading" />}
-        {isLoadingCreate && <ScreenSpinner state="loading" />}
+
         {file && (
           <FormItem>
             <div>
@@ -104,16 +96,22 @@ const CreatePost = (props: CreatePostProps) => {
           <ButtonGroup
             style={{ display: 'flex', justifyContent: 'space-between' }}
           >
-            <File onChange={handleOnChange} size="m" mode="outline">
-              Фотография
+            <File
+              loading={isLoading}
+              onChange={handleOnChange}
+              size="m"
+              mode="outline"
+            >
+              {error ? error : 'Фотография'}
             </File>
             <Button
+              loading={isLoadingCreate}
               onClick={submit}
               mode="outline"
               size="m"
               after={<Icon24SendOutline />}
             >
-              Опубликовать
+              {errorCreate ? errorCreate : 'Опубликовать'}
             </Button>
           </ButtonGroup>
         </FormItem>

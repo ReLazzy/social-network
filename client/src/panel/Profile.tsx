@@ -27,6 +27,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { getUserByUsername } from '../store/reducers/User/UserActionCreators';
 import { getPostUser } from '../store/reducers/Post/PostActionCreator';
 import { ReseivedPostType } from '../types/Post';
+import { VIEW_PROFILE } from '../routes';
 
 const Profile = (props: PanelIDProps) => {
   const { user, isLoading, error } = useAppSelector(
@@ -34,7 +35,8 @@ const Profile = (props: PanelIDProps) => {
   );
   const { username } = useAppSelector((state) => state.authReducer);
   const {
-    posts,
+    postsOwner,
+    ownerPosts,
     isLoading: isLoadingPosts,
     error: errorPosts,
   } = useAppSelector((state) => state.postReducer);
@@ -44,11 +46,14 @@ const Profile = (props: PanelIDProps) => {
   const params = location.getParams();
   const id = params.id;
 
-  const [currentPosts, setCurrentPosts] = useState<ReseivedPostType[]>([]);
   useEffect(() => {
-    setCurrentPosts(posts);
-  }, [posts]);
+    dispatch(getUserByUsername(id));
+    dispatch(getPostUser(id));
+  }, []);
   useEffect(() => {
+    console.log(postsOwner, username);
+
+    if (postsOwner === username || !id) return;
     dispatch(getUserByUsername(id));
     dispatch(getPostUser(id));
   }, [id]);
@@ -62,12 +67,10 @@ const Profile = (props: PanelIDProps) => {
       {user && !isLoading && (
         <div>
           <Head {...user}></Head>
-          {username === id && (
-            <CreatePost update={getPostUser(id)}></CreatePost>
-          )}
-
-          {posts.map((post) => {
-            if (true) return <Post key={post._id} {...post} />;
+          {username === id && <CreatePost></CreatePost>}
+          {errorPosts && <Title>{errorPosts}</Title>}
+          {ownerPosts.map((post) => {
+            return <Post key={post._id} {...post} />;
           })}
         </div>
       )}
