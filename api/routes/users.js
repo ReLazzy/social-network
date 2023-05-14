@@ -32,7 +32,7 @@ router.put('/update', authMiddleware, async (req, res) => {
 router.post('/username', authMiddleware, async (req, res) => {
   try {
     const { username } = req.body;
-    console.log(username);
+
     const user = await User.findOne({ username });
 
     const { password, updatedAt, isAdmin, createdAt, ...other } = user._doc;

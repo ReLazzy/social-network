@@ -47,21 +47,12 @@ function App() {
   const { isAuth } = useAppSelector((state) => state.authReducer);
   const [activeStory, setActiveStory] = useState(location.getViewId());
   const dispatch = useAppDispatch();
-  // const [email, setEmail] = useState('');
-  // const [name, setName] = useState('');
-  // const [lastName, setLastName] = useState('');
-  // const [purpose, setPurpose] = useState('');
-  // const [showPatronymic, setShowPatronymic] = useState(true);
-  console.log('activeStory', activeStory);
-  console.log('isAuth', isAuth);
-  useEffect(() => {
-    console.log('первый рендер');
 
+  useEffect(() => {
     dispatch(checkUser());
   }, []);
 
   useEffect(() => {
-    console.log('смена ауз/локации');
     const currentPage = location.getPageId();
     const isPublic = publicRoutes.includes(currentPage);
     if (!isAuth) !isPublic && router.pushPage(PAGE_AUTH);

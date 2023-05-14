@@ -8,9 +8,7 @@ router.post('/', authMiddleware, async (req, res) => {
   const user = await User.findOne({ username: req.user.username });
   const newPost = new Post({
     username: user.username,
-    name: user.name,
-    lastname: user.lastname,
-    profilePicture: user.profilePicture,
+
     userId: req.user.id,
     desc: req.body.desc,
     image: req.body.image,
@@ -18,7 +16,17 @@ router.post('/', authMiddleware, async (req, res) => {
 
   try {
     const savedPost = await newPost.save();
-    res.status(200).json(savedPost);
+    const userInfo = [
+      {
+        _id: user._id,
+        username: user.username,
+        name: user.name,
+        lastname: user.lastname,
+        profilePicture: user.profilePicture,
+      },
+    ];
+    console.log(userInfo);
+    res.status(200).json({ allPost: [savedPost], usersProfile: userInfo });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -91,10 +99,16 @@ router.post('/timeline/all', authMiddleware, async (req, res) => {
 
     const date = req.body.date;
     const page = req.body.page;
-    console.log(limit);
 
     const currentUsers = [req.user.id];
     const allUsers = currentUsers.concat(currentUser.followings);
+    const usersProfile = await Promise.all(
+      allUsers.map(async (Id) => {
+        const user = await User.findById(Id);
+        const { _id, username, name, lastname, profilePicture } = user._doc;
+        return { _id, username, name, lastname, profilePicture };
+      })
+    );
     const friendPosts = await Post.find({
       userId: allUsers,
       createdAt: { $lt: date },
@@ -106,25 +120,36 @@ router.post('/timeline/all', authMiddleware, async (req, res) => {
       .limit(limit);
 
     const allPost = [].concat(...friendPosts);
-    res.json({ allPost });
+    res.json({ allPost, usersProfile });
   } catch (err) {
-    console.log(err);
     res.status(500).json(err);
   }
 });
 
 router.post('/timeline/person', authMiddleware, async (req, res) => {
   try {
-    const { username } = req.body;
-
+    const { username, date, page } = req.body;
+    const limit = 5;
+    console.log(username, date, page);
     const currentUser = await User.findOne({ username });
+    const { _id, name, lastname, profilePicture } = currentUser;
+    const allPost = await Post.find({
+      userId: currentUser._id,
+      createdAt: { $lt: date },
+    })
+      .sort({
+        createdAt: -1,
+      })
+      .skip(limit * page)
+      .limit(limit);
 
-    const allPost = await Post.find({ userId: currentUser._id }).sort({
-      createdAt: -1,
+    res.json({
+      allPost,
+      usersProfile: [{ _id, name, username, lastname, profilePicture }],
+      username: username,
     });
-
-    res.json({ allPost, username });
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 });

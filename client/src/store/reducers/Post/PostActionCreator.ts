@@ -1,31 +1,50 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import PostService from '../../../services/PostService';
+import PostService, { usersPostsInfo } from '../../../services/PostService';
 import { SendPostType } from '../../../components/CreatePost';
+import { ReseivedPostType } from '../../../types/Post';
+
+export interface fetchPostProps {
+  username: string;
+  page: number;
+  date: number;
+}
+
+const SpreadPosts = (posts: ReseivedPostType[], users: usersPostsInfo[]) => {
+  const allposts = posts.map((post) => {
+    const user = users.find((user) => user._id === post.userId);
+    if (user) {
+      const { _id, ...other } = user!;
+      return { ...other, ...post };
+    }
+  });
+  return allposts;
+};
 
 export const addPost = createAsyncThunk(
   '/post',
   async (post: SendPostType, thunkAPI) => {
     try {
       const response = await PostService.addPost(post);
-      return response.data;
+      const posts = response.data.allPost;
+      const users = response.data.usersProfile;
+      const allposts = SpreadPosts(posts, users);
+      return allposts;
     } catch (e: any) {
       return thunkAPI.rejectWithValue('Не удалось создать пост');
     }
   }
 );
-interface fetchPostProps {
-  page: number;
-  date: number;
-}
 
 export const fetchPost = createAsyncThunk(
   '/fetchPost',
   async (props: fetchPostProps, thunkAPI) => {
     try {
       const response = await PostService.getFriendsPost(props.page, props.date);
-
-      return response.data.allPost;
+      const posts = response.data.allPost;
+      const users = response.data.usersProfile;
+      const allposts = SpreadPosts(posts, users);
+      return allposts;
     } catch (e: any) {
       return thunkAPI.rejectWithValue('Не удалось создать пост');
     }
@@ -47,11 +66,19 @@ export const likePost = createAsyncThunk(
 
 export const getPostUser = createAsyncThunk(
   '/usernamePost',
-  async (username: string, thunkAPI) => {
+  async (props: fetchPostProps, thunkAPI) => {
     try {
-      const response = await PostService.getPostByUsername(username);
-
-      return response.data;
+      const { username, page, date } = props;
+      const response = await PostService.getPostByUsername(
+        username,
+        page,
+        date
+      );
+      const posts = response.data.allPost;
+      const users = response.data.usersProfile;
+      const usernanme = response.data.usernanme;
+      const allPost = SpreadPosts(posts, users);
+      return { allPost, usernanme };
     } catch (e: any) {
       return thunkAPI.rejectWithValue('Не удалось создать пост');
     }

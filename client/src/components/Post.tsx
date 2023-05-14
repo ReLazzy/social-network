@@ -41,7 +41,7 @@ const Post = (props: ReseivedPostType) => {
 
   const [like, setLike] = useState(props.likes.length);
   const [isLiked, setIsLiked] = useState<boolean>(props.likes.includes(id));
-  const [user, setUser] = useState<UserType>();
+
   const {
     user: currUser,
     isLoading,
@@ -49,19 +49,6 @@ const Post = (props: ReseivedPostType) => {
   } = useAppSelector((state) => state.userReducer);
 
   const dispatch = useAppDispatch();
-
-  const getUser = async (username: string) => {
-    try {
-      const response = await UserService.getByUserName(username);
-      setUser(response.data);
-      return;
-    } catch (err: any) {
-      return err;
-    }
-  };
-  useEffect(() => {
-    getUser(props.username);
-  }, []);
 
   // getUser(props.username);
   // getUser(props.username);
@@ -79,28 +66,26 @@ const Post = (props: ReseivedPostType) => {
       {error && <Title>{error}</Title>}
       {props && (
         <div className={style.container}>
-          {user && (
-            <div
-              className={style.author}
-              onClick={() =>
-                router.pushPage(PAGE_PROFILE, { id: props.username })
+          <div
+            className={style.author}
+            onClick={() =>
+              router.pushPage(PAGE_PROFILE, { id: props.username })
+            }
+          >
+            <Avatar
+              src={
+                props.profilePicture
+                  ? PF + props.profilePicture
+                  : PF + 'avatar.png'
               }
-            >
-              <Avatar
-                src={
-                  user.profilePicture
-                    ? PF + user.profilePicture
-                    : PF + 'avatar.png'
-                }
-              />
-              <div>
-                <Headline weight="2">
-                  {user.name} {user.lastname}
-                </Headline>
-                <Subhead weight="3">{format(props.createdAt)}</Subhead>
-              </div>
+            />
+            <div>
+              <Headline weight="2">
+                {props.name} {props.lastname}
+              </Headline>
+              <Subhead weight="3">{format(props.createdAt)}</Subhead>
             </div>
-          )}
+          </div>
           <Text>{props.desc}</Text>
           {props.image && (
             <div className={style.image}>

@@ -9,8 +9,8 @@ import { AllData } from '../../../services/PostService';
 
 interface PostsState {
   date: number;
-  newPostsCount: number;
   postPage: number;
+
   postsOwner: string;
   posts: ReseivedPostType[];
   ownerPosts: ReseivedPostType[];
@@ -21,7 +21,7 @@ interface PostsState {
 const initialState: PostsState = {
   date: +new Date(),
   postPage: 0,
-  newPostsCount: 0,
+
   postsOwner: '',
   ownerPosts: [],
   posts: [],
@@ -36,6 +36,10 @@ export const postSlice = createSlice({
     incrementPage(state, action: PayloadAction<number>) {
       state.postPage += action.payload;
     },
+    reset(state) {
+      state.ownerPosts = [];
+      state.isLoading = false;
+    },
   },
   extraReducers: {
     [getPostUser.pending.type](state) {
@@ -43,7 +47,7 @@ export const postSlice = createSlice({
     },
     [getPostUser.fulfilled.type](state, action: PayloadAction<AllData>) {
       state.postsOwner = action.payload.usernanme || '';
-      state.ownerPosts = action.payload.allPost;
+      state.ownerPosts = [...state.ownerPosts, ...action.payload.allPost];
       state.isLoading = false;
       state.error = '';
     },
@@ -55,10 +59,10 @@ export const postSlice = createSlice({
     [addPost.pending.type](state) {
       state.isLoading = true;
     },
-    [addPost.fulfilled.type](state, action: PayloadAction<ReseivedPostType>) {
-      state.posts.unshift(action.payload);
-      state.newPostsCount += 1;
-      state.ownerPosts.unshift(action.payload);
+    [addPost.fulfilled.type](state, action: PayloadAction<ReseivedPostType[]>) {
+      state.posts = [...action.payload, ...state.posts];
+
+      state.ownerPosts = [...action.payload, ...state.ownerPosts];
       state.isLoading = false;
       state.error = '';
     },

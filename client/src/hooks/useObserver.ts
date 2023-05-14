@@ -3,11 +3,13 @@ import { useEffect, useRef } from 'react';
 export const useObserver = (
   ref: React.RefObject<HTMLDivElement>,
   isLoading: boolean,
-  callback: () => {},
+  callback: () => void,
   canLoad: boolean
 ) => {
   const observer = useRef<IntersectionObserver | null>(null);
   useEffect(() => {
+    console.log('Зашел');
+
     if (isLoading) return;
 
     if (observer.current) observer.current.disconnect();
