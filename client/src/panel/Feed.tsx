@@ -19,19 +19,26 @@ import { useObserver } from '../hooks/useObserver';
 const Feed = (props: PanelIDProps) => {
   const { incrementPage } = postSlice.actions;
   const dispatch = useAppDispatch();
-  const { postPage, posts, isLoading, error, date } = useAppSelector(
-    (state) => state.postReducer
-  );
+  const {
+    postPage: pageCount,
+    posts,
+    isLoading,
+    error,
+    date,
+  } = useAppSelector((state) => state.postReducer);
   const isEnd = false;
+  const [postPage, setPostPage] = useState<number>(pageCount);
   const lastElement = useRef<HTMLDivElement>(null);
   const callback = () => dispatch(incrementPage(1));
   console.log(postPage);
 
-  useObserver(lastElement, isLoading, callback, postPage * 5 <= posts.length);
+  useObserver(lastElement, isLoading, callback, postPage * 5 < posts.length);
 
   useEffect(() => {
-    dispatch(fetchPost({ username: '', page: postPage, date: date }));
-  }, [postPage]);
+    if (pageCount !== 0 && postPage === pageCount) return;
+    dispatch(fetchPost({ username: '', page: pageCount, date: date }));
+    setPostPage(pageCount);
+  }, [pageCount]);
 
   return (
     <Panel id={PANEL_FEED}>
