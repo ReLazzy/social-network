@@ -8,6 +8,7 @@ export const PAGE_AUTH = '/auth';
 export const PAGE_FEED = '/feed';
 export const PAGE_FRIENDS = '/friends';
 export const PAGE_MESSAGES = '/messages';
+export const PAGE_MESSAGES_ID = '/messages/:id([A-z]+)';
 export const PAGE_PROFILE = '/profile/:id([A-z]+)';
 export const PAGE_EDIT_PROFILE = '/edit';
 
@@ -17,6 +18,7 @@ export const PANEL_REGISTRATION = 'registration';
 export const PANEL_FEED = 'feed';
 export const PANEL_FRIENDS = 'friends';
 export const PANEL_MESSAGES = 'messages';
+export const PANEL_MESSAGES_ID = 'messages_id';
 export const PANEL_PROFILE = 'profile';
 export const PANEL_EDIT = 'edit';
 
@@ -43,6 +45,7 @@ export const routes = {
   [PAGE_AUTH]: new Page(PANEL_REGISTRATION, VIEW_AUTH),
   [PAGE_FEED]: new Page(PANEL_FEED, VIEW_FEED),
   [PAGE_FRIENDS]: new Page(PANEL_FRIENDS, VIEW_FRIENDS),
+  [PAGE_MESSAGES_ID]: new Page(PANEL_MESSAGES, VIEW_MESSAGES),
   [PAGE_MESSAGES]: new Page(PANEL_MESSAGES, VIEW_MESSAGES),
   [PAGE_PROFILE]: new Page(PANEL_PROFILE, VIEW_PROFILE),
 };

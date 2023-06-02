@@ -10,7 +10,7 @@ export interface fetchPostProps {
   date: number;
 }
 
-const SpreadPosts = (posts: ReseivedPostType[], users: usersPostsInfo[]) => {
+const mergePosts = (posts: ReseivedPostType[], users: usersPostsInfo[]) => {
   const allposts = posts.map((post) => {
     const user = users.find((user) => user._id === post.userId);
     if (user) {
@@ -28,7 +28,7 @@ export const addPost = createAsyncThunk(
       const response = await PostService.addPost(post);
       const posts = response.data.allPost;
       const users = response.data.usersProfile;
-      const allposts = SpreadPosts(posts, users);
+      const allposts = mergePosts(posts, users);
       return allposts;
     } catch (e: any) {
       return thunkAPI.rejectWithValue('Не удалось создать пост');
@@ -43,7 +43,7 @@ export const fetchPost = createAsyncThunk(
       const response = await PostService.getFriendsPost(props.page, props.date);
       const posts = response.data.allPost;
       const users = response.data.usersProfile;
-      const allposts = SpreadPosts(posts, users);
+      const allposts = mergePosts(posts, users);
       return allposts;
     } catch (e: any) {
       return thunkAPI.rejectWithValue('Не удалось создать пост');
@@ -77,7 +77,7 @@ export const getPostUser = createAsyncThunk(
       const posts = response.data.allPost;
       const users = response.data.usersProfile;
       const usernanme = response.data.usernanme;
-      const allPost = SpreadPosts(posts, users);
+      const allPost = mergePosts(posts, users);
       return { allPost, usernanme };
     } catch (e: any) {
       return thunkAPI.rejectWithValue('Не удалось создать пост');

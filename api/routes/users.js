@@ -43,11 +43,12 @@ router.post('/username', authMiddleware, async (req, res) => {
   }
 });
 
-//get a user by username
+//get a user by id
 router.post('/id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.body;
-    const user = await User.findById({ id });
+
+    const user = await User.findById(id);
 
     const { password, updatedAt, isAdmin, createdAt, ...other } = user._doc;
     res.status(200).json(other);

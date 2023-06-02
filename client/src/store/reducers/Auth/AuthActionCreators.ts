@@ -17,7 +17,6 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await AuthService.login(props.email, props.password);
       await localStorage.setItem('token', response.data.token);
-      console.log(response.data.username);
 
       return response.data;
     } catch (e: any) {

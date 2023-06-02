@@ -62,6 +62,7 @@ router.post('/check', authMiddleware, async (req, res) => {
     return res.status(200).json({
       username: req.user.username,
       id: req.user.id,
+
       followers: user.followers,
       followings: user.followings,
     });
@@ -92,6 +93,7 @@ router.post('/login', async (req, res) => {
       token,
       username: user.username,
       id: user._id,
+
       followers: user.followers,
       followings: user.followings,
     });

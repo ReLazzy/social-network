@@ -52,10 +52,7 @@ const UserSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
-    chats: {
-      type: Array,
-      default: [],
-    },
+
     isAdmin: {
       type: Boolean,
       default: false,

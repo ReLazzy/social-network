@@ -27,6 +27,7 @@ interface AuthState {
 const initialState: AuthState = {
   id: '',
   username: '',
+
   followers: [],
   followings: [],
   isAuth: true,
@@ -43,8 +44,9 @@ export const authSlice = createSlice({
       state.isAuth = true;
     },
     [checkUser.fulfilled.type](state, action: PayloadAction<AuthResponse>) {
-      state.username = action.payload.username;
       if (action.payload.id !== state.id) state.id = action.payload.id;
+      state.username = action.payload.username;
+
       state.followers = action.payload.followers;
       state.followings = action.payload.followings;
       state.error = '';
@@ -59,6 +61,7 @@ export const authSlice = createSlice({
     [loginUser.fulfilled.type](state, action: PayloadAction<AuthResponse>) {
       state.username = action.payload.username;
       state.id = action.payload.id;
+
       state.followers = action.payload.followers;
       state.followings = action.payload.followings;
       state.isLoading = false;

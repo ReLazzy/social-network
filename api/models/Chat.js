@@ -7,18 +7,6 @@ const ChatSchema = new mongoose.Schema(
       type: [],
       required: true,
     },
-    name: {
-      type: String,
-      max: 500,
-    },
-    img: {
-      type: String,
-    },
-    messages: {
-      type: Array,
-      ref: Message,
-      default: [],
-    },
   },
   { timestamps: true }
 );

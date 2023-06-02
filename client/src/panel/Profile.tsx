@@ -63,12 +63,6 @@ const Profile = (props: PanelIDProps) => {
     postPage * 5 <= ownerPosts.length
   );
 
-  // useEffect(() => {
-  //   dispatch(reset());
-  //   dispatch(getUserByUsername(id));
-  //   dispatch(getPostUser({ username: id, page: postPage, date: date }));
-  // }, []);
-
   useEffect(() => {
     dispatch(getPostUser({ username: id, page: postPage, date: date }));
   }, [postPage]);

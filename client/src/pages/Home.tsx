@@ -28,7 +28,7 @@ import {
 } from '@vkontakte/vkui';
 
 import { useEffect, useState } from 'react';
-import Message from '../components/Message';
+import Message from '../components/MessageView';
 import Feed from '../panel/Feed';
 import Friends from '../panel/Friends';
 import Messages from '../panel/Messages';
@@ -39,6 +39,7 @@ import {
   PANEL_FEED,
   PANEL_FRIENDS,
   PANEL_MESSAGES,
+  PANEL_MESSAGES_ID,
   PANEL_PROFILE,
   VIEW_FEED,
   VIEW_FRIENDS,

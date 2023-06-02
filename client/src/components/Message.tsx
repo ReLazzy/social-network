@@ -1,40 +1,68 @@
-import {
-  Avatar,
-  Counter,
-  Footnote,
-  Headline,
-  SimpleCell,
-  Text,
-} from '@vkontakte/vkui';
 import React from 'react';
-interface MessageType {
-  userId: number;
-  text: string;
-  image?: string;
-}
+import { UserType } from '../types/User';
+import { MessageType } from './Chat';
+import { Avatar, Group, Subhead, Text } from '@vkontakte/vkui';
+import { format } from 'timeago.js';
+
 interface MessageProps {
-  chatId: string;
-  image: string;
-  lastMessage: MessageType;
-  unReadMessage: number;
+  user: UserType;
+  message: MessageType;
+  own: boolean;
 }
-const Message = () => {
+const Message = (props: MessageProps) => {
+  const { user, message, own } = props;
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   return (
-    <SimpleCell
-      before={
-        <Avatar
-          src={
-            'https://sun9-20.userapi.com/impg/LaWkQb5TUc4qBbr-h-BdTre9tT8sly1Sp_G3gA/lgsPHbG8Tq8.jpg?size=531x415&quality=96&sign=ac5fab84e732e4a3bffec2261080b01c&type=album'
-          }
-        />
-      }
-      after={<Counter>12</Counter>}
+    <div
+      className="message"
+      style={{
+        display: 'flex',
+        margin: '10px 0',
+        justifyContent: `${own ? 'flex-end' : 'flex-start'}`,
+        alignItems: 'center',
+        gap: '10px',
+      }}
+      key={message._id}
     >
-      <div className="message-text">
-        <Headline weight="2">Рустам Назирович</Headline>
-        <Footnote>Вы: Фотография</Footnote>
-      </div>
-    </SimpleCell>
+      {!own && (
+        <Avatar
+          size={30}
+          src={
+            user?.profilePicture?.length !== 0 && user?.profilePicture
+              ? PF + user?.profilePicture
+              : PF + 'background.jpg'
+          }
+        ></Avatar>
+      )}
+
+      <Group
+        style={{
+          maxWidth: '200px',
+        }}
+      >
+        <Text style={{ margin: '10px' }}>{message.text}</Text>
+        {message.img && (
+          <div
+            style={{
+              margin: '10px',
+            }}
+          >
+            <img
+              style={{
+                borderRadius: '15px',
+                width: '100%',
+                height: 'auto',
+              }}
+              src={PF + message.img}
+              alt="image"
+            />
+          </div>
+        )}
+        <Subhead style={{ margin: '10px' }} weight="3">
+          {format(message.createdAt)}
+        </Subhead>
+      </Group>
+    </div>
   );
 };
 

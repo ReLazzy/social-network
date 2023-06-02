@@ -30,9 +30,8 @@ const Feed = (props: PanelIDProps) => {
   const [postPage, setPostPage] = useState<number>(pageCount);
   const lastElement = useRef<HTMLDivElement>(null);
   const callback = () => dispatch(incrementPage(1));
-  console.log(postPage);
 
-  useObserver(lastElement, isLoading, callback, postPage * 5 < posts.length);
+  useObserver(lastElement, isLoading, callback, postPage * 5 <= posts.length);
 
   useEffect(() => {
     if (pageCount !== 0 && postPage === pageCount) return;

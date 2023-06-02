@@ -105,9 +105,9 @@ const Post = (props: ReseivedPostType) => {
               <div onClick={likeHandler}>
                 {isLiked ? <Icon28LikeFillRed /> : <Icon28LikeOutline />}
               </div>
-              <Icon28ShareOutline
+              {/* <Icon28ShareOutline
                 onClick={() => console.log(props.username, currUser)}
-              />
+              /> */}
             </div>
             {props.userId === id && <Icon28EditOutline />}
           </div>

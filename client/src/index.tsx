@@ -19,7 +19,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <Provider store={store}>
     <RouterContext.Provider value={router}>
-      <ConfigProvider>
+      <ConfigProvider appearance="dark">
         <AdaptivityProvider>
           <App />
         </AdaptivityProvider>

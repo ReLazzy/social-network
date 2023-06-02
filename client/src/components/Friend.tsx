@@ -3,7 +3,8 @@ import { Avatar, Button, ButtonGroup, SimpleCell, Text } from '@vkontakte/vkui';
 import style from './Friend.module.css';
 import { FriendType, FriendsResponse } from '../types/modals/friendsResponse';
 import { useRouter } from '@happysanta/router';
-import { PAGE_PROFILE } from '../routes';
+import { PAGE_MESSAGES_ID, PAGE_PROFILE } from '../routes';
+import $api from '../http';
 
 const Friend = (props: FriendType) => {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -15,7 +16,22 @@ const Friend = (props: FriendType) => {
         <Avatar src={props.profilePicture && PF + props.profilePicture} />
       }
       after={
-        <Button mode="outline" size="s">
+        <Button
+          onClick={async (e) => {
+            e.stopPropagation();
+            try {
+              const res = await $api.post('/chats/', {
+                receiverId: props._id,
+              });
+
+              router.pushPage(PAGE_MESSAGES_ID, { id: `${props.username}` });
+            } catch (err) {
+              console.log('произошла ошибка', err);
+            }
+          }}
+          mode="outline"
+          size="s"
+        >
           Написать
         </Button>
       }
