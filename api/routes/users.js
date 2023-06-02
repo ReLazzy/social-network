@@ -38,7 +38,6 @@ router.post('/username', authMiddleware, async (req, res) => {
     const { password, updatedAt, isAdmin, createdAt, ...other } = user._doc;
     res.status(200).json(other);
   } catch (err) {
-    console.log(err);
     res.status(500).json(err);
   }
 });
@@ -84,27 +83,26 @@ router.post('/friends', authMiddleware, async (req, res) => {
 
 router.post('/search', authMiddleware, async (req, res) => {
   try {
-    const search = req.body.search;
-    if (search !== '') {
-      console.log(search);
-      const name = User.find([
-        {
-          $search: {
-            index: 'text',
-            text: {
-              query: '<query>',
-              path: {
-                wildcard: '*',
-              },
-            },
-          },
-        },
-      ]);
-      res.status(200).json({ name });
+    const searchQuery = req.body.searchQuery;
+    const filter = {
+      $or: [
+        { name: { $regex: searchQuery, $options: 'i' } }, // Поиск по имени (регистронезависимый)
+        { lastname: { $regex: searchQuery, $options: 'i' } }, // Поиск по фамилии (регистронезависимый)
+        { username: { $regex: searchQuery, $options: 'i' } }, // Поиск по электронной почте (регистронезависимый)
+        { email: { $regex: searchQuery, $options: 'i' } }, // Поиск по электронной почте (регистронезависимый)
+      ],
+    };
+
+    if (searchQuery !== '') {
+      const users = await User.find(filter);
+
+      res.status(200).json(users);
     } else {
       res.status(400).json({ message: 'введите запрос' });
     }
   } catch (err) {
+    console.log(searchQuery);
+    console.log(err);
     res.status(500).json(err);
   }
 });

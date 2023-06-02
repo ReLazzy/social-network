@@ -25,7 +25,7 @@ router.post('/', authMiddleware, async (req, res) => {
         profilePicture: user.profilePicture,
       },
     ];
-    console.log(userInfo);
+
     res.status(200).json({ allPost: [savedPost], usersProfile: userInfo });
   } catch (err) {
     res.status(500).json(err);
@@ -134,7 +134,7 @@ router.post('/timeline/person', authMiddleware, async (req, res) => {
   try {
     const { username, date, page } = req.body;
     const limit = 5;
-    console.log(username, date, page);
+
     const currentUser = await User.findOne({ username });
     const { _id, name, lastname, profilePicture } = currentUser;
     const allPost = await Post.find({
@@ -153,7 +153,6 @@ router.post('/timeline/person', authMiddleware, async (req, res) => {
       username: username,
     });
   } catch (err) {
-    console.log(err);
     res.status(500).json(err);
   }
 });

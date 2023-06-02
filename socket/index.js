@@ -22,15 +22,12 @@ const getUser = (userId) => {
 };
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
   //   io.emit('welcome', 'hello server');
   socket.on('addUser', (userId) => {
-    console.log('addUser', userId);
     console.log(userId);
     addUser(userId, socket.id);
   });
   socket.on('disconnect', () => {
-    console.log('disconnect');
     removeUser(socket.id);
   });
 
