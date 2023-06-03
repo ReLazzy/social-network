@@ -12,9 +12,8 @@ const messageRoute = require('./routes/messages');
 const cors = require('cors');
 const path = require('path');
 const multer = require('multer');
-const MONGO_URL = require('./config');
-const HOST_URL = require('./config');
-dotenv.config();
+const { MONGO_URL } = require('./config');
+const { HOST_URL } = require('./config');
 
 mongoose.connect(MONGO_URL).then(() => {
   console.log('Connected to MongoDB');
