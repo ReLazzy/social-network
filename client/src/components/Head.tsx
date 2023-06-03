@@ -18,6 +18,7 @@ import {
   unfollowUser,
 } from '../store/reducers/Auth/AuthActionCreators';
 import { error } from 'console';
+import { PF } from '../constants';
 
 const Head = (user: UserType) => {
   const router = useRouter();
@@ -32,7 +33,7 @@ const Head = (user: UserType) => {
   const location = useLocation();
   const params = location.getParams();
   const id = params.id;
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
   const currentYear = new Date();
   const profileYear = new Date(user.birthday);
   const m = currentYear.getMonth() - profileYear.getMonth();

@@ -33,10 +33,11 @@ import { format } from 'timeago.js';
 import UserService from '../services/UserService';
 import { UserType } from '../types/User';
 import { getUserByUsername } from '../store/reducers/User/UserActionCreators';
+import { PF } from '../constants';
 
 const Post = (props: ReseivedPostType) => {
   const router = useRouter();
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
   const { id } = useAppSelector((state) => state.authReducer);
 
   const [like, setLike] = useState(props.likes.length);

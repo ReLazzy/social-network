@@ -32,6 +32,7 @@ import Message from './Message';
 import { Socket, io } from 'socket.io-client';
 import { useRouter } from '@happysanta/router';
 import { PAGE_PROFILE } from '../routes';
+import { PF } from '../constants';
 
 interface ChatProps {
   username: string;
@@ -68,8 +69,6 @@ const Chat = (props: ChatProps) => {
 
   const [currentUser, setCurrentUser] = useState<UserType>();
   const [senderUser, setSenderUser] = useState<UserType>();
-
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   const [newMessageText, setNewMessageText] = useState<string>('');
   const [file, setFile] = useState<Blob | MediaSource>();

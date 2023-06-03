@@ -12,10 +12,11 @@ const messageRoute = require('./routes/messages');
 const cors = require('cors');
 const path = require('path');
 const multer = require('multer');
-
+const MONGO_URL = require('./config');
+const HOST_URL = require('./config');
 dotenv.config();
 
-mongoose.connect(process.env.MONGO_URL).then(() => {
+mongoose.connect(MONGO_URL).then(() => {
   console.log('Connected to MongoDB');
 });
 
@@ -27,7 +28,7 @@ app.use(morgan('common'));
 app.use(
   cors({
     credentials: true,
-    origin: process.env.HOST_URL,
+    origin: HOST_URL,
   })
 );
 app.use('/images', express.static(path.join(__dirname, '/public/images')));

@@ -13,6 +13,7 @@ import { PAGE_MESSAGES_ID } from '../routes';
 import { useAppSelector } from '../hooks/redux';
 import $api from '../http';
 import { UserType } from '../types/User';
+import { PF } from '../constants';
 
 export interface MessageProps {
   _id: string;
@@ -22,7 +23,7 @@ const MessageView = (props: MessageProps) => {
   const router = useRouter();
   const { id } = useAppSelector((state) => state.authReducer);
   const [user, setUser] = useState<UserType>();
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
   useEffect(() => {
     const friendId = props.usersId.find((m) => m !== id);
 

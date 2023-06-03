@@ -3,6 +3,7 @@ import { UserType } from '../types/User';
 import { MessageType } from './Chat';
 import { Avatar, Group, Subhead, Text } from '@vkontakte/vkui';
 import { format } from 'timeago.js';
+import { PF } from '../constants';
 
 interface MessageProps {
   user: UserType;
@@ -11,7 +12,7 @@ interface MessageProps {
 }
 const Message = (props: MessageProps) => {
   const { user, message, own } = props;
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
   return (
     <div
       className="message"

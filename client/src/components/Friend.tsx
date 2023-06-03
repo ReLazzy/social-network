@@ -5,9 +5,9 @@ import { FriendType, FriendsResponse } from '../types/modals/friendsResponse';
 import { useRouter } from '@happysanta/router';
 import { PAGE_MESSAGES_ID, PAGE_PROFILE } from '../routes';
 import $api from '../http';
+import { PF } from '../constants';
 
 const Friend = (props: FriendType) => {
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const router = useRouter();
   return (
     <SimpleCell
