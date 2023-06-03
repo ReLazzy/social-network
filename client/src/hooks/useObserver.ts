@@ -8,8 +8,6 @@ export const useObserver = (
 ) => {
   const observer = useRef<IntersectionObserver | null>(null);
   useEffect(() => {
-    console.log('Зашел');
-
     if (isLoading) return;
 
     if (observer.current) observer.current.disconnect();

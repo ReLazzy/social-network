@@ -109,7 +109,6 @@ export const authSlice = createSlice({
       state,
       action: PayloadAction<followResponse>
     ) {
-      console.log('UNF', action.payload);
       state.followers = action.payload.followers;
       state.followings = action.payload.followings;
       state.isLoading = false;

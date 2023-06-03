@@ -124,7 +124,7 @@ const Chat = (props: ChatProps) => {
     setFileUrl('');
   };
   useEffect(() => {
-    setSocket(io('ws://localhost:8900'));
+    setSocket(io('ws://45.141.76.248:8900'));
   }, [id]);
 
   useEffect(() => {

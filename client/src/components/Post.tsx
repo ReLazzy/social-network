@@ -106,10 +106,10 @@ const Post = (props: ReseivedPostType) => {
                 {isLiked ? <Icon28LikeFillRed /> : <Icon28LikeOutline />}
               </div>
               {/* <Icon28ShareOutline
-                onClick={() => console.log(props.username, currUser)}
+                onClick={() => console.log(props.username, currUser)}    Поделиться
               /> */}
             </div>
-            {props.userId === id && <Icon28EditOutline />}
+            {/* {props.userId === id && <Icon28EditOutline />} Редактирование*/}
           </div>
         </div>
       )}
