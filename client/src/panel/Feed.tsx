@@ -17,8 +17,9 @@ import { PANEL_FEED } from '../routes';
 import { useObserver } from '../hooks/useObserver';
 
 const Feed = (props: PanelIDProps) => {
-  const { incrementPage } = postSlice.actions;
+  const { incrementPage, reset } = postSlice.actions;
   const dispatch = useAppDispatch();
+  const { username } = useAppSelector((state) => state.authReducer);
   const {
     postPage: pageCount,
     posts,
@@ -32,7 +33,10 @@ const Feed = (props: PanelIDProps) => {
   const callback = () => dispatch(incrementPage(1));
 
   useObserver(lastElement, isLoading, callback, postPage * 5 <= posts.length);
-
+  useEffect(() => {
+    dispatch(reset());
+    setPostPage(0);
+  }, [username]);
   useEffect(() => {
     if (pageCount !== 0 && postPage === pageCount) return;
     dispatch(fetchPost({ username: '', page: pageCount, date: date }));

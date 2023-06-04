@@ -40,7 +40,8 @@ const CreatePost = () => {
 
   const data = new FormData();
 
-  const submit = () => {
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
     const newPost: SendPostType = { desc: text, image: fileUrl };
     if (newPost.desc === '' && newPost.image === '') {
       console.log('Вы клоун?');
@@ -56,18 +57,24 @@ const CreatePost = () => {
     e.preventDefault();
     if (e.target.files && e.target.files.length) {
       const file = e.target.files[0];
-      setFile(file);
-      const fileName = Date.now() + file.name;
-      setFileUrl(fileName);
-      data.append('name', fileName);
-      data.append('file', file);
-      dispatch(uploadImage(data));
+      const maxFileSize = 5 * 1024 * 1024; //5mb
+      const fileSize = file.size;
+      if (fileSize > maxFileSize)
+        alert('Размер файла превышает максимальный размер');
+      else {
+        setFile(file);
+        const fileName = Date.now() + file.name;
+        setFileUrl(fileName);
+        data.append('name', fileName);
+        data.append('file', file);
+        dispatch(uploadImage(data));
+      }
     }
   };
 
   return (
     <Group>
-      <FormLayout>
+      <FormLayout onSubmit={submit}>
         <FormItem>
           <Textarea
             value={text}
@@ -97,6 +104,7 @@ const CreatePost = () => {
             style={{ display: 'flex', justifyContent: 'space-between' }}
           >
             <File
+              accept=".jpg, .jpeg, .png"
               loading={isLoading}
               onChange={handleOnChange}
               size="m"

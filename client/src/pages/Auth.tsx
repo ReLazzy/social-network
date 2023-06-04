@@ -12,7 +12,7 @@ import {
   PanelHeader,
   Title,
 } from '@vkontakte/vkui';
-import { FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { PAGE_LOGIN } from '../routes';
 import { PanelIDProps } from '../types/Panel';
 import { REG_EMAIL, REG_PASS } from '../constants';
@@ -29,11 +29,36 @@ const Auth = (props: PanelIDProps) => {
   const [username, setUserName] = useState<string>('');
 
   const [email, setEmail] = useState<string>('');
+  const [isEmail, setIsEmail] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [isPassword, setIsPassword] = useState<boolean>(false);
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [date, setDate] = useState<Date>(() => new Date());
+
+  useEffect(() => {
+    setIsPassword(REG_PASS.test(password));
+  }, [password]);
+
+  useEffect(() => {
+    setIsEmail(REG_EMAIL.test(email));
+  }, [email]);
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.currentTarget;
+
+    const setStateAction = {
+      email: setEmail,
+      name: setName,
+      lastName: setLastName,
+      password: setPassword,
+      confirmPassword: setConfirmPassword,
+    }[name];
+
+    setStateAction && setStateAction(value);
+  };
+
   const register = () => {
     const user: IUser = {
       email: email,
@@ -65,9 +90,7 @@ const Auth = (props: PanelIDProps) => {
             type="text"
             name="username"
             value={username}
-            onChange={(e) => {
-              setUserName(e.target.value);
-            }}
+            onChange={onChange}
           />
         </FormItem>
         <FormItem
@@ -77,14 +100,7 @@ const Auth = (props: PanelIDProps) => {
             name.length === 0 ? 'default' : name.length >= 3 ? 'valid' : 'error'
           }
         >
-          <Input
-            type="text"
-            name="name"
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-          />
+          <Input type="text" name="name" value={name} onChange={onChange} />
         </FormItem>
         <FormItem
           bottom="Длина должна быть больше 3 символов"
@@ -101,37 +117,28 @@ const Auth = (props: PanelIDProps) => {
             type="text"
             name="lastNname"
             value={lastName}
-            onChange={(e) => {
-              setLastName(e.target.value);
-            }}
+            onChange={onChange}
           />
         </FormItem>
         <FormItem
           top="E-mail"
-          status={REG_EMAIL.test(email) ? 'valid' : 'error'}
+          status={isEmail ? 'valid' : 'error'}
           bottom={
-            email
+            isEmail
               ? 'Электронная почта введена верно!'
               : 'Пожалуйста, введите электронную почту'
           }
         >
-          <Input
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
+          <Input type="email" name="email" value={email} onChange={onChange} />
         </FormItem>
 
         <FormItem
           top="Пароль"
-          status={REG_PASS.test(password) ? 'valid' : 'error'}
+          status={isPassword ? 'valid' : 'error'}
           bottom={
-            REG_PASS.test(password)
-              ? 'Пароль может содержать только латинские буквы и цифры.'
-              : ''
+            isPassword
+              ? ''
+              : 'Пароль может содержать только латинские буквы и цифры.'
           }
         >
           <Input
@@ -139,9 +146,7 @@ const Auth = (props: PanelIDProps) => {
             name="password"
             placeholder="Введите пароль"
             value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
+            onChange={onChange}
           />
         </FormItem>
 
@@ -164,9 +169,7 @@ const Auth = (props: PanelIDProps) => {
             name="confirmPassword"
             placeholder="Повторите пароль"
             value={confirmPassword}
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-            }}
+            onChange={onChange}
           />
         </FormItem>
         <FormItem top="Дата рождения">

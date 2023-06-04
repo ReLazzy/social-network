@@ -87,7 +87,7 @@ const Post = (props: ReseivedPostType) => {
               <Subhead weight="3">{format(props.createdAt)}</Subhead>
             </div>
           </div>
-          <Text>{props.desc}</Text>
+          <Text style={{ whiteSpace: 'pre-line' }}>{props.desc}</Text>
           {props.image && (
             <div className={style.image}>
               <img src={PF + props.image} alt="image" />

@@ -8,8 +8,8 @@ export const PAGE_AUTH = '/auth';
 export const PAGE_FEED = '/feed';
 export const PAGE_FRIENDS = '/friends';
 export const PAGE_MESSAGES = '/messages';
-export const PAGE_MESSAGES_ID = '/messages/:id([A-z]+)';
-export const PAGE_PROFILE = '/profile/:id([A-z]+)';
+export const PAGE_MESSAGES_ID = '/messages/:id([A-z0-9]+)';
+export const PAGE_PROFILE = '/profile/:id([A-z0-9]+)';
 export const PAGE_EDIT_PROFILE = '/edit';
 
 export const PANEL_LOGIN = 'login';

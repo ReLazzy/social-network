@@ -41,7 +41,9 @@ const Message = (props: MessageProps) => {
           maxWidth: '200px',
         }}
       >
-        <Text style={{ margin: '10px' }}>{message.text}</Text>
+        <Text style={{ margin: '10px', whiteSpace: 'pre-line' }}>
+          {message.text}
+        </Text>
         {message.img && (
           <div
             style={{

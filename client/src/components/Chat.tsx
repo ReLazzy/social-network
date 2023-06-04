@@ -17,6 +17,7 @@ import {
 } from '@vkontakte/vkui';
 import React, {
   Dispatch,
+  RefObject,
   SetStateAction,
   useEffect,
   useRef,
@@ -85,16 +86,23 @@ const Chat = (props: ChatProps) => {
     e.preventDefault();
     if (e.target.files && e.target.files.length) {
       const file = e.target.files[0];
-      setFile(file);
-      const fileName = Date.now() + file.name;
-      setFileUrl(fileName);
-      data.append('name', fileName);
-      data.append('file', file);
-      dispatch(uploadImage(data));
+      const maxFileSize = 5 * 1024 * 1024; //5mb
+      const fileSize = file.size;
+      if (fileSize > maxFileSize)
+        alert('Размер файла превышает максимальный размер');
+      else {
+        setFile(file);
+        const fileName = Date.now() + file.name;
+        setFileUrl(fileName);
+        data.append('name', fileName);
+        data.append('file', file);
+        dispatch(uploadImage(data));
+      }
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     const newMessage: NewMessageType = {
       text: newMessageText,
       img: fileUrl,
@@ -117,6 +125,7 @@ const Chat = (props: ChatProps) => {
       setMessages([...messages, res.data]);
     } catch (error) {
       console.log(error);
+      alert('не удалось отправить сообщение');
     }
     setNewMessageText('');
     setFile(undefined);
@@ -237,9 +246,10 @@ const Chat = (props: ChatProps) => {
         })}
       </div>
 
-      <FormLayout>
+      <FormLayout onSubmit={handleSubmit}>
         <FormItem>
           <Textarea
+            autoFocus={true}
             value={newMessageText}
             onChange={(e) => setNewMessageText(e.target.value)}
             rows={1}

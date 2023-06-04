@@ -37,6 +37,7 @@ export const postSlice = createSlice({
       state.postPage += action.payload;
     },
     reset(state) {
+      state.postPage = 0;
       state.ownerPosts = [];
       state.isLoading = false;
     },
@@ -78,7 +79,10 @@ export const postSlice = createSlice({
       state,
       action: PayloadAction<ReseivedPostType[]>
     ) {
-      state.posts = [...state.posts, ...action.payload];
+      state.posts =
+        state.postPage === 0
+          ? [...action.payload]
+          : [...state.posts, ...action.payload];
       state.isLoading = false;
       state.error = '';
     },
