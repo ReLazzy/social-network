@@ -4,7 +4,7 @@ import { Button, Group, Headline, Panel, Text, Title } from '@vkontakte/vkui';
 import { Icon56NewsfeedOutline } from '@vkontakte/icons';
 import Post from '../components/Post';
 import CreatePost from '../components/CreatePost';
-import { useRouter } from '@happysanta/router';
+import { useLocation, useRouter } from '@happysanta/router';
 import Navbar from '../components/Navbar';
 // import { posts } from '../dummyData/Posts';
 import axios from 'axios';
@@ -17,6 +17,7 @@ import { PANEL_FEED } from '../routes';
 import { useObserver } from '../hooks/useObserver';
 
 const Feed = (props: PanelIDProps) => {
+  const location = useLocation();
   const { resetAll } = postSlice.actions;
   const dispatch = useAppDispatch();
   const [postPage, setPostPage] = useState<number>(0);
@@ -24,7 +25,7 @@ const Feed = (props: PanelIDProps) => {
   const { posts, isLoading, error, date } = useAppSelector(
     (state) => state.postReducer
   );
-  const isEnd = false;
+  const isEnd = posts.length === 0 || postPage * 5 > posts.length;
 
   const lastElement = useRef<HTMLDivElement>(null);
   const callback = () => {
@@ -36,13 +37,17 @@ const Feed = (props: PanelIDProps) => {
   useEffect(() => {
     dispatch(resetAll());
     setPostPage(0);
-  }, []);
+    console.log('сработал');
+  }, [id]);
   useEffect(() => {
-    id && dispatch(fetchPost({ username: '', page: postPage, date: date }));
+    console.log(postPage);
+    setTimeout(() => {
+      id && dispatch(fetchPost({ username: '', page: postPage, date: date }));
+    }, 100);
   }, [postPage]);
 
   return (
-    <Panel id={PANEL_FEED}>
+    <Panel id={props.id}>
       <Navbar text="Новости" />
       <CreatePost></CreatePost>
 

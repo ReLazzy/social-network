@@ -81,6 +81,8 @@ export const postSlice = createSlice({
       action: PayloadAction<ReseivedPostType[]>
     ) {
       state.posts = [...state.posts, ...action.payload];
+      console.log(state.posts);
+
       state.isLoading = false;
       state.error = '';
     },

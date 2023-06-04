@@ -17,6 +17,7 @@ import {
 } from '@vkontakte/vkui';
 import React, {
   Dispatch,
+  KeyboardEventHandler,
   RefObject,
   SetStateAction,
   useEffect,
@@ -105,8 +106,14 @@ const Chat = (props: ChatProps) => {
       }
     }
   };
+  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleSubmit();
+    }
+  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async () => {
     const newMessage: NewMessageType = {
       text: newMessageText,
       img: fileUrl,
@@ -250,7 +257,7 @@ const Chat = (props: ChatProps) => {
         })}
       </div>
 
-      <FormLayout onSubmit={handleSubmit}>
+      <FormLayout onKeyDown={handleKeyDown}>
         <FormItem>
           <Textarea
             autoFocus={true}
