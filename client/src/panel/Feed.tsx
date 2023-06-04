@@ -20,6 +20,7 @@ const Feed = (props: PanelIDProps) => {
   const { resetAll } = postSlice.actions;
   const dispatch = useAppDispatch();
   const [postPage, setPostPage] = useState<number>(0);
+  const { id } = useAppSelector((state) => state.authReducer);
   const { posts, isLoading, error, date } = useAppSelector(
     (state) => state.postReducer
   );
@@ -37,7 +38,7 @@ const Feed = (props: PanelIDProps) => {
     setPostPage(0);
   }, []);
   useEffect(() => {
-    dispatch(fetchPost({ username: '', page: postPage, date: date }));
+    id && dispatch(fetchPost({ username: '', page: postPage, date: date }));
   }, [postPage]);
 
   return (

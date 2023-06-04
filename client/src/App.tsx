@@ -38,11 +38,17 @@ function App() {
   useEffect(() => {
     const currentPage = location.getPageId();
     const isPublic = publicRoutes.includes(currentPage);
-    if (!isAuth) !isPublic && router.pushPage(PAGE_AUTH);
-    else isPublic && router.pushPage(PAGE_FEED);
-    setActiveStory(location.getViewId());
+    if (!isAuth) {
+      !isPublic && router.pushPage(PAGE_AUTH);
+      const story =
+        location.getViewActivePanel(VIEW_AUTH) || PANEL_REGISTRATION;
+
+      setActiveStory(story);
+    } else {
+      isPublic && router.pushPage(PAGE_FEED);
+      setActiveStory(location.getViewId());
+    }
   }, [location, isAuth]);
-  console.log(activeStory);
 
   return (
     <AppRoot>
@@ -51,10 +57,7 @@ function App() {
       ) : (
         <SplitLayout header={<PanelHeader separator={false} />}>
           <SplitCol maxWidth="600px" style={{ margin: '0 auto' }}>
-            <View
-              id={VIEW_AUTH}
-              activePanel={location.getViewActivePanel(VIEW_AUTH)!}
-            >
+            <View id={VIEW_AUTH} activePanel={activeStory}>
               <Login id={PANEL_LOGIN}></Login>
               <Auth id={PANEL_REGISTRATION}></Auth>
             </View>

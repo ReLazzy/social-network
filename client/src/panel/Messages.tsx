@@ -17,7 +17,6 @@ import $api from '../http';
 import MessageView from '../components/MessageView';
 
 const Messages = (props: PanelIDProps) => {
-  const router = useRouter();
   const location = useLocation();
   const params = location.getParams();
   const id = params.id;

@@ -107,7 +107,6 @@ const Chat = (props: ChatProps) => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
     const newMessage: NewMessageType = {
       text: newMessageText,
       img: fileUrl,
