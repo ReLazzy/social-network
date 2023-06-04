@@ -30,11 +30,14 @@ const Auth = (props: PanelIDProps) => {
 
   const [email, setEmail] = useState<string>('');
   const [isEmail, setIsEmail] = useState<boolean>(false);
+
   const [name, setName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
+
   const [password, setPassword] = useState<string>('');
   const [isPassword, setIsPassword] = useState<boolean>(false);
   const [confirmPassword, setConfirmPassword] = useState<string>('');
+
   const [date, setDate] = useState<Date>(() => new Date());
 
   useEffect(() => {
@@ -49,9 +52,10 @@ const Auth = (props: PanelIDProps) => {
     const { name, value } = e.currentTarget;
 
     const setStateAction = {
+      username: setUserName,
       email: setEmail,
       name: setName,
-      lastName: setLastName,
+      lastname: setLastName,
       password: setPassword,
       confirmPassword: setConfirmPassword,
     }[name];
@@ -115,7 +119,7 @@ const Auth = (props: PanelIDProps) => {
         >
           <Input
             type="text"
-            name="lastNname"
+            name="lastname"
             value={lastName}
             onChange={onChange}
           />

@@ -53,10 +53,15 @@ const CreatePost = () => {
     setFile(undefined);
     setFileUrl('');
   };
+
   const handleOnChange = (e: any) => {
     e.preventDefault();
     if (e.target.files && e.target.files.length) {
       const file = e.target.files[0];
+      if (!file.type.startsWith('image/')) {
+        alert('Загрузите фотку');
+        return;
+      }
       const maxFileSize = 5 * 1024 * 1024; //5mb
       const fileSize = file.size;
       if (fileSize > maxFileSize)
@@ -104,7 +109,6 @@ const CreatePost = () => {
             style={{ display: 'flex', justifyContent: 'space-between' }}
           >
             <File
-              accept=".jpg, .jpeg, .png"
               loading={isLoading}
               onChange={handleOnChange}
               size="m"

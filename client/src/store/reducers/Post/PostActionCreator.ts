@@ -46,7 +46,7 @@ export const fetchPost = createAsyncThunk(
       const allposts = mergePosts(posts, users);
       return allposts;
     } catch (e: any) {
-      return thunkAPI.rejectWithValue('Не удалось создать пост');
+      return thunkAPI.rejectWithValue('Не удалось загрузить посты');
     }
   }
 );
@@ -80,7 +80,7 @@ export const getPostUser = createAsyncThunk(
       const allPost = mergePosts(posts, users);
       return { allPost, usernanme };
     } catch (e: any) {
-      return thunkAPI.rejectWithValue('Не удалось создать пост');
+      return thunkAPI.rejectWithValue('Не удалось получить посты пользователя');
     }
   }
 );

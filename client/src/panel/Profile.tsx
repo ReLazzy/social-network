@@ -39,7 +39,6 @@ const Profile = (props: PanelIDProps) => {
   const [postPage, setPostPage] = useState<number>(0);
   const { username } = useAppSelector((state) => state.authReducer);
   const {
-    postsOwner,
     ownerPosts,
     date,
     isLoading: isLoadingPosts,

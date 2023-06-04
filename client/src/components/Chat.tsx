@@ -86,6 +86,11 @@ const Chat = (props: ChatProps) => {
     e.preventDefault();
     if (e.target.files && e.target.files.length) {
       const file = e.target.files[0];
+      if (!file.type.startsWith('image/')) {
+        alert('Загрузите фотку');
+        return;
+      }
+
       const maxFileSize = 5 * 1024 * 1024; //5mb
       const fileSize = file.size;
       if (fileSize > maxFileSize)

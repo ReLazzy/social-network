@@ -9,7 +9,6 @@ import { AllData } from '../../../services/PostService';
 
 interface PostsState {
   date: number;
-  postPage: number;
 
   postsOwner: string;
   posts: ReseivedPostType[];
@@ -20,7 +19,6 @@ interface PostsState {
 
 const initialState: PostsState = {
   date: +new Date(),
-  postPage: 0,
 
   postsOwner: '',
   ownerPosts: [],
@@ -33,11 +31,14 @@ export const postSlice = createSlice({
   name: 'upload',
   initialState,
   reducers: {
-    incrementPage(state, action: PayloadAction<number>) {
-      state.postPage += action.payload;
+    resetAll(state) {
+      state.date = +new Date();
+      state.posts = [];
+
+      state.isLoading = false;
+      state.error = '';
     },
     reset(state) {
-      state.postPage = 0;
       state.ownerPosts = [];
       state.isLoading = false;
     },
@@ -79,10 +80,7 @@ export const postSlice = createSlice({
       state,
       action: PayloadAction<ReseivedPostType[]>
     ) {
-      state.posts =
-        state.postPage === 0
-          ? [...action.payload]
-          : [...state.posts, ...action.payload];
+      state.posts = [...state.posts, ...action.payload];
       state.isLoading = false;
       state.error = '';
     },

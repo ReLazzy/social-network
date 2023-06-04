@@ -62,7 +62,6 @@ const Login = (props: PanelIDProps) => {
               loading={isLoading}
               onClick={() => {
                 dispatch(loginUser({ email, password }));
-                router.pushPage(PAGE_FEED);
               }}
               size="l"
               stretched

@@ -17,31 +17,28 @@ import { PANEL_FEED } from '../routes';
 import { useObserver } from '../hooks/useObserver';
 
 const Feed = (props: PanelIDProps) => {
-  const { incrementPage, reset } = postSlice.actions;
+  const { resetAll } = postSlice.actions;
   const dispatch = useAppDispatch();
-  const { username } = useAppSelector((state) => state.authReducer);
-  const {
-    postPage: pageCount,
-    posts,
-    isLoading,
-    error,
-    date,
-  } = useAppSelector((state) => state.postReducer);
+  const [postPage, setPostPage] = useState<number>(0);
+  const { posts, isLoading, error, date } = useAppSelector(
+    (state) => state.postReducer
+  );
   const isEnd = false;
-  const [postPage, setPostPage] = useState<number>(pageCount);
+
   const lastElement = useRef<HTMLDivElement>(null);
-  const callback = () => dispatch(incrementPage(1));
+  const callback = () => {
+    setPostPage(postPage + 1);
+  };
 
   useObserver(lastElement, isLoading, callback, postPage * 5 <= posts.length);
+
   useEffect(() => {
-    dispatch(reset());
+    dispatch(resetAll());
     setPostPage(0);
-  }, [username]);
+  }, []);
   useEffect(() => {
-    if (pageCount !== 0 && postPage === pageCount) return;
-    dispatch(fetchPost({ username: '', page: pageCount, date: date }));
-    setPostPage(pageCount);
-  }, [pageCount]);
+    dispatch(fetchPost({ username: '', page: postPage, date: date }));
+  }, [postPage]);
 
   return (
     <Panel id={PANEL_FEED}>

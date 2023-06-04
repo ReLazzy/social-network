@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { UserType } from '../types/User';
 import { MessageType } from './Chat';
 import { Avatar, Group, Subhead, Text } from '@vkontakte/vkui';
@@ -12,7 +12,10 @@ interface MessageProps {
 }
 const Message = (props: MessageProps) => {
   const { user, message, own } = props;
-
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const fullField = () => {
+    setIsFullscreen(!isFullscreen);
+  };
   return (
     <div
       className="message"
@@ -46,6 +49,8 @@ const Message = (props: MessageProps) => {
         </Text>
         {message.img && (
           <div
+            onClick={fullField}
+            className={isFullscreen ? 'fullscreen-image' : ''}
             style={{
               margin: '10px',
             }}
