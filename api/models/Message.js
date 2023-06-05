@@ -12,7 +12,7 @@ const MessageSchema = new mongoose.Schema(
     },
     text: {
       type: String,
-      max: 500,
+      maxlength: 500,
     },
     img: {
       type: String,

@@ -37,10 +37,8 @@ const Feed = (props: PanelIDProps) => {
   useEffect(() => {
     dispatch(resetAll());
     setPostPage(0);
-    console.log('сработал');
   }, [id]);
   useEffect(() => {
-    console.log(postPage);
     setTimeout(() => {
       id && dispatch(fetchPost({ username: '', page: postPage, date: date }));
     }, 100);

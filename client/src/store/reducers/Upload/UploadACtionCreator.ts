@@ -20,3 +20,16 @@ export const uploadImage = createAsyncThunk(
     }
   }
 );
+
+// export const deleteImage = createAsyncThunk(
+//   '/upload',
+//   async (image: string, thunkAPI) => {
+//     try {
+//       const response = await UploadService.deleteImage(image);
+
+//       return;
+//     } catch (e: any) {
+//       return thunkAPI.rejectWithValue('Не удалось загрузить фотографию');
+//     }
+//   }
+// );

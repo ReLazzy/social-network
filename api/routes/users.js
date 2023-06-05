@@ -85,11 +85,23 @@ router.post('/search', authMiddleware, async (req, res) => {
   try {
     const searchQuery = req.body.searchQuery;
     const filter = {
-      $or: [
-        { name: { $regex: searchQuery, $options: 'i' } }, // Поиск по имени (регистронезависимый)
-        { lastname: { $regex: searchQuery, $options: 'i' } }, // Поиск по фамилии (регистронезависимый)
-        { username: { $regex: searchQuery, $options: 'i' } }, // Поиск по электронной почте (регистронезависимый)
-        { email: { $regex: searchQuery, $options: 'i' } }, // Поиск по электронной почте (регистронезависимый)
+      $and: [
+        {
+          $or: [
+            { name: { $regex: searchQuery, $options: 'i' } }, // Поиск по имени (регистронезависимый)
+            { lastname: { $regex: searchQuery, $options: 'i' } }, // Поиск по фамилии (регистронезависимый)
+            {
+              username: {
+                $regex: searchQuery,
+                $options: 'i',
+              },
+            }, // Поиск по электронной почте (регистронезависимый)
+            { email: { $regex: searchQuery, $options: 'i' } }, // Поиск по электронной почте (регистронезависимый)
+          ],
+        },
+        {
+          _id: { $ne: req.user.id }, // Добавляем условие, исключая пользователя с определенным id
+        },
       ],
     };
 

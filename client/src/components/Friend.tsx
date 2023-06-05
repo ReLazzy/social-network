@@ -9,6 +9,7 @@ import { PF } from '../constants';
 
 const Friend = (props: FriendType) => {
   const router = useRouter();
+
   return (
     <SimpleCell
       onClick={() => router.pushPage(PAGE_PROFILE, { id: `${props.username}` })}

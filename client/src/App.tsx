@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import {
   PAGE_AUTH,
   PAGE_FEED,
+  PAGE_LOGIN,
   PANEL_LOGIN,
   PANEL_REGISTRATION,
   VIEW_AUTH,
@@ -32,6 +33,8 @@ function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    console.log(0);
+
     dispatch(checkUser());
   }, []);
 
@@ -39,17 +42,20 @@ function App() {
     const currentPage = location.getPageId();
     const isPublic = publicRoutes.includes(currentPage);
     if (!isAuth) {
-      !isPublic && router.pushPage(PAGE_AUTH);
-      const story =
-        location.getViewActivePanel(VIEW_AUTH) || PANEL_REGISTRATION;
+      console.log(false);
+      const story = location.getViewActivePanel(VIEW_AUTH) || PANEL_LOGIN;
+      console.log(story);
 
       setActiveStory(story);
+      !isPublic && router.pushPage(PAGE_LOGIN);
     } else {
-      isPublic && router.pushPage(PAGE_FEED);
+      console.log(true);
       setActiveStory(location.getViewId());
+      isPublic && router.pushPage(PAGE_FEED);
     }
   }, [location, isAuth]);
-
+  console.log('isAuth:', isAuth);
+  console.log('activeStory:', activeStory);
   return (
     <AppRoot>
       {isAuth ? (

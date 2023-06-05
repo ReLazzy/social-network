@@ -30,7 +30,7 @@ const initialState: AuthState = {
 
   followers: [],
   followings: [],
-  isAuth: true,
+  isAuth: false,
   isLoading: false,
   error: '',
 };

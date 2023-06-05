@@ -8,12 +8,17 @@ let users = [];
 
 const addUser = (userId, socketId) => {
   users.map((user) => {
-    if (user.userId === userId) user.socketId = socketId;
+    if (user.userId === userId) {
+      console.log('свап сокета на новый');
+      user.socketId = socketId;
+      return;
+    }
   });
   !users.some((user) => user.userId === userId) &&
     users.push({ userId, socketId });
 };
 const removeUser = (socketId) => {
+  console.log('ушел');
   users = users.filter((user) => user.socketId !== socketId);
 };
 
@@ -33,7 +38,7 @@ io.on('connection', (socket) => {
 
   socket.on('sendMessage', ({ senderId, receiverId, message }) => {
     const user = getUser(receiverId);
-
+    console.log(user);
     user && io.to(user.socketId).emit('getMessage', { senderId, message });
   });
 });

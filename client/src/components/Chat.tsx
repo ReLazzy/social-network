@@ -143,7 +143,7 @@ const Chat = (props: ChatProps) => {
     setFileUrl('');
   };
   useEffect(() => {
-    setSocket(io('ws://45.141.76.248:8900'));
+    setSocket(io('ws://45.141.76.248:8900', { reconnectionDelayMax: 10000 }));
   }, [id]);
 
   useEffect(() => {
@@ -272,6 +272,10 @@ const Chat = (props: ChatProps) => {
           <FormItem>
             <div>
               <img
+                onClick={() => {
+                  setFile(undefined);
+                  setFileUrl('');
+                }}
                 style={{
                   borderRadius: '15px',
                   width: '100%',

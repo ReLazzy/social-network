@@ -37,7 +37,7 @@ const MessageView = (props: MessageProps) => {
     };
 
     getUser();
-  }, []);
+  }, [id]);
 
   return user ? (
     <SimpleCell

@@ -13,7 +13,7 @@ import {
   Title,
 } from '@vkontakte/vkui';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { uploadImage } from '../store/reducers/Upload/UploadACtionCreator';
 import { addPost, fetchPost } from '../store/reducers/Post/PostActionCreator';
@@ -53,6 +53,9 @@ const CreatePost = () => {
     setFile(undefined);
     setFileUrl('');
   };
+  useEffect(() => {
+    error && alert('не удалось загрузить фото');
+  }, [error, errorCreate]);
 
   const handleOnChange = (e: any) => {
     e.preventDefault();
@@ -79,7 +82,7 @@ const CreatePost = () => {
 
   return (
     <Group>
-      <FormLayout onSubmit={submit}>
+      <FormLayout>
         <FormItem>
           <Textarea
             value={text}
@@ -93,6 +96,10 @@ const CreatePost = () => {
           <FormItem>
             <div>
               <img
+                onClick={() => {
+                  setFile(undefined);
+                  setFileUrl('');
+                }}
                 style={{
                   borderRadius: '15px',
                   width: '100%',
@@ -114,7 +121,7 @@ const CreatePost = () => {
               size="m"
               mode="outline"
             >
-              {error ? error : 'Фотография'}
+              {'Фотография'}
             </File>
             <Button
               loading={isLoadingCreate}
@@ -123,7 +130,7 @@ const CreatePost = () => {
               size="m"
               after={<Icon24SendOutline />}
             >
-              {errorCreate ? errorCreate : 'Опубликовать'}
+              {'Опубликовать'}
             </Button>
           </ButtonGroup>
         </FormItem>

@@ -48,7 +48,7 @@ const Friends = (props: PanelIDProps) => {
         console.log(error);
       }
     };
-    search !== '' && getUsers();
+    search !== '' ? getUsers() : setFindFriend([]);
   }, [search]);
 
   const onChange = (e: any) => {
