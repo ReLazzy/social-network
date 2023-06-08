@@ -18,13 +18,25 @@ const generateAccessToken = (id, username) => {
 router.post('/register', async (req, res) => {
   try {
     const { username, name, lastname, birthday, password, email } = req.body;
+    const selectedDate = new Date(birthday);
+
+    if (selectedDate >= currentDate)
+      return res
+        .status(400)
+        .json({ message: 'Выбранная дата рождения позже текущей даты' });
 
     const candidateUser = await User.findOne({ username });
     const candidateMail = await User.findOne({ email });
+    const isUsernameValid = /^[a-zA-Z0-9]+$/.test(username);
     if (candidateUser || candidateMail) {
       return res
         .status(400)
         .json({ message: 'Пользователь с таким именем/почтой уже существует' });
+    }
+    if (!isUsernameValid) {
+      return res
+        .status(400)
+        .json({ message: 'Username может содержть только латинские буквы' });
     }
 
     const salt = await bcrypt.genSalt(10);

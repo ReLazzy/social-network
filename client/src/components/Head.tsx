@@ -17,7 +17,7 @@ import {
   followUser,
   unfollowUser,
 } from '../store/reducers/Auth/AuthActionCreators';
-import { error } from 'console';
+import { Icon28CakeOutline } from '@vkontakte/icons';
 import { PF } from '../constants';
 
 const Head = (user: UserType) => {
@@ -36,6 +36,10 @@ const Head = (user: UserType) => {
 
   const currentYear = new Date();
   const profileYear = new Date(user.birthday);
+
+  const isBirthday =
+    profileYear.getMonth() === currentYear.getMonth() &&
+    profileYear.getDate() === currentYear.getDate();
   const m = currentYear.getMonth() - profileYear.getMonth();
   const d =
     m < 0 || (m === 0 && currentYear.getDate() < profileYear.getDate()) ? 1 : 0;
@@ -69,7 +73,13 @@ const Head = (user: UserType) => {
 
           <div className={style.info}>
             <Title
-              style={{ marginBottom: 8, marginTop: 20 }}
+              style={{
+                marginBottom: 8,
+                marginTop: 20,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
               level="2"
               weight="2"
             >
@@ -81,8 +91,20 @@ const Head = (user: UserType) => {
                 color: 'var(--vkui--color_text_secondary)',
               }}
             >
-              <div>{user.city}</div>
-              <div>Возраст: {curentAge}</div>
+              <div
+                style={{
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {user.city}
+              </div>
+              <div
+                style={{ display: 'flex', gap: '5px', alignItems: 'flex-end' }}
+              >
+                Возраст: {curentAge} {isBirthday && <Icon28CakeOutline />}
+              </div>
             </Text>
           </div>
           {username === id ? (
