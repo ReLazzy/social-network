@@ -49,10 +49,10 @@ const ModalEdit = (props: PanelIDProps) => {
   const submit = () => {
     const updateUser: UpdateUser = {};
     if (REG_PASS.test(password)) updateUser['password'] = password;
-    if (name.length >= 3) updateUser['name'] = name;
-    if (lastname.length >= 3) updateUser['lastname'] = lastname;
-    if (city.length >= 3) updateUser['city'] = city;
-    if (city.length >= 3) updateUser['city'] = city;
+    if (name.length >= 3 && name.length <= 255) updateUser['name'] = name;
+    if (lastname.length >= 3 && lastname.length <= 255)
+      updateUser['lastname'] = lastname;
+    if (city.length >= 3 && city.length <= 255) updateUser['city'] = city;
     if (fileCover) updateUser['coverPicture'] = fileCoverUrl;
     if (fileProfile) updateUser['profilePicture'] = fileProfileUrl;
 

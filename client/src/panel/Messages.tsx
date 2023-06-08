@@ -33,7 +33,7 @@ const Messages = (props: PanelIDProps) => {
       }
     };
     getChats();
-  }, []);
+  }, [id]);
 
   return (
     <Panel id={props.id}>
