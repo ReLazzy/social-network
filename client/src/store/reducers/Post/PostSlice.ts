@@ -62,8 +62,8 @@ export const postSlice = createSlice({
       state.isLoading = true;
     },
     [addPost.fulfilled.type](state, action: PayloadAction<ReseivedPostType[]>) {
+    console.log(1)
       state.posts = [...action.payload, ...state.posts];
-
       state.ownerPosts = [...action.payload, ...state.ownerPosts];
       state.isLoading = false;
       state.error = '';

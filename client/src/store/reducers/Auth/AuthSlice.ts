@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { IUser } from '../../../types/modals/IUser';
+
 import {
   checkUser,
   followUser,
@@ -7,7 +7,7 @@ import {
   registerUser,
   unfollowUser,
 } from './AuthActionCreators';
-import { useRouter } from '@happysanta/router';
+
 import {
   AuthResponse,
   followResponse,
@@ -30,7 +30,7 @@ const initialState: AuthState = {
 
   followers: [],
   followings: [],
-  isAuth: false,
+  isAuth: true,
   isLoading: false,
   error: '',
 };

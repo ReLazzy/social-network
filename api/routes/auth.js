@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
   try {
     const { username, name, lastname, birthday, password, email } = req.body;
     const selectedDate = new Date(birthday);
-
+    const currentDate = new Date();
     if (selectedDate >= currentDate)
       return res
         .status(400)

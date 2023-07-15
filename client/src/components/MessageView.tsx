@@ -23,6 +23,7 @@ const MessageView = (props: MessageProps) => {
   const router = useRouter();
   const { id } = useAppSelector((state) => state.authReducer);
   const [user, setUser] = useState<UserType>();
+  const [unread, setUnread] = useState<number>(0);
 
   useEffect(() => {
     const friendId = props.usersId.find((m) => m !== id);
@@ -35,7 +36,17 @@ const MessageView = (props: MessageProps) => {
         console.log(error);
       }
     };
-
+    const getUnread = async () => {
+      try {
+        const res = await $api.post<number>('chats/unreadMessage', {
+          chatId: props._id,
+        });
+        setUnread(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+getUnread()
     getUser();
   }, [id]);
 
@@ -51,7 +62,7 @@ const MessageView = (props: MessageProps) => {
           }
         />
       }
-      after={<Counter></Counter>}
+      indicator={unread > 0 ?<Counter>{unread}</Counter>:<></>}
     >
       <div className="message-text">
         <Headline weight="2">

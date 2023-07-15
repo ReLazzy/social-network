@@ -4,12 +4,14 @@ import authReducer from './reducers/Auth/AuthSlice';
 import friendsReducer from './reducers/Friends/FriendSlice';
 import uploadReducer from './reducers/Upload/UploadSlice';
 import postReducer from './reducers/Post/PostSlice';
+import chatsReducer from './reducers/Chats/ChatsSlice';
 const rootReducer = combineReducers({
   postReducer,
   uploadReducer,
   friendsReducer,
   userReducer,
   authReducer,
+  chatsReducer,
 });
 
 export const setupStore = () => {

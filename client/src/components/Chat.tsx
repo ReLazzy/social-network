@@ -21,6 +21,7 @@ import React, {
   RefObject,
   SetStateAction,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -35,6 +36,9 @@ import { Socket, io } from 'socket.io-client';
 import { useRouter } from '@happysanta/router';
 import { PAGE_PROFILE } from '../routes';
 import { PF } from '../constants';
+import { checkChats } from '../store/reducers/Chats/ChatsActionCreator';
+import { chatsSlice } from '../store/reducers/Chats/ChatsSlice';
+import socket from '../socket';
 
 interface ChatProps {
   username: string;
@@ -45,6 +49,7 @@ interface ChatType {
 }
 
 export interface MessageType {
+  chatId: string;
   _id: string;
   createdAt: string;
   text?: string;
@@ -67,8 +72,6 @@ const Chat = (props: ChatProps) => {
 
   const { id, username } = useAppSelector((state) => state.authReducer);
 
-  const [socket, setSocket] = useState<Socket | null>(null);
-
   const [currentUser, setCurrentUser] = useState<UserType>();
   const [senderUser, setSenderUser] = useState<UserType>();
 
@@ -81,8 +84,9 @@ const Chat = (props: ChatProps) => {
 
   const scrollRef = useRef<null | HTMLDivElement>(null);
 
+  const { deleteChats } = chatsSlice.actions;
   const { isLoading, error } = useAppSelector((state) => state.uploadReducer);
-
+  console.log('перерендер');
   const handleOnChange = (e: any) => {
     e.preventDefault();
     if (e.target.files && e.target.files.length) {
@@ -128,7 +132,8 @@ const Chat = (props: ChatProps) => {
     try {
       const res = await $api.post<MessageType>('/messages', newMessage);
 
-      socket?.emit('sendMessage', {
+      socket.emit('sendMessage', {
+        chatId: chat?._id,
         senderId: id,
         receiverId: currentUser?._id,
         message: res.data,
@@ -142,24 +147,24 @@ const Chat = (props: ChatProps) => {
     setFile(undefined);
     setFileUrl('');
   };
-  useEffect(() => {
-    setSocket(io('ws://45.141.76.248:8900', { reconnectionDelayMax: 10000 }));
-  }, [id]);
 
   useEffect(() => {
+    console.log('перерендер из за 1');
     arrivalMessages &&
+      !messages.includes(arrivalMessages) &&
       chat?.usersId.includes(arrivalMessages.userId) &&
       setMessages((prev) => [...prev, arrivalMessages]);
   }, [arrivalMessages, chat]);
 
   useEffect(() => {
-    socket?.emit('addUser', id);
-    socket?.on('getMessage', (data) => {
-      setArrivalMessages(data.message);
-    });
-  }, [socket, id]);
+    console.log('перерендер из за 2');
+    id &&
+      socket.on('getMessage', (data) => {
+        setArrivalMessages(data.message);
+      });
+  }, [id]);
 
-  useEffect(() => {
+  useMemo(() => {
     const getUser = async (
       username: string,
       setUser: Dispatch<SetStateAction<UserType | undefined>>
@@ -187,12 +192,15 @@ const Chat = (props: ChatProps) => {
         console.log(err);
       }
     };
+    console.log('перерендер из за 3', props, username);
     getChats();
     getUser(props.username, setCurrentUser);
     getUser(username, setSenderUser);
-  }, [props, username]);
+  }, [props.username, username]);
 
   useEffect(() => {
+    console.log('перерендер из за 4');
+    chat && dispatch(deleteChats(chat._id));
     const getMessages = async () => {
       try {
         const res = await $api.post<MessageType[]>('/messages/all', {
@@ -208,6 +216,7 @@ const Chat = (props: ChatProps) => {
   }, [chat]);
 
   useEffect(() => {
+    console.log('перерендер из за 5');
     scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 

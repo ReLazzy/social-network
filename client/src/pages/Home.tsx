@@ -27,7 +27,7 @@ import {
   usePlatform,
 } from '@vkontakte/vkui';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useRef } from 'react';
 import Message from '../components/MessageView';
 import Feed from '../panel/Feed';
 import Friends from '../panel/Friends';
@@ -48,9 +48,13 @@ import {
 } from '../routes';
 
 import Modal from '../components/modals/Modal';
+import socket from '../socket';
 import { useDispatch } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import PanelEdit from '../components/modals/ModalEdit';
+import { chatsSlice } from '../store/reducers/Chats/ChatsSlice';
+import { MessageType } from '../components/Chat';
+import { checkChats } from '../store/reducers/Chats/ChatsActionCreator';
 
 interface HomeProps {
   activeStory: string;
@@ -62,7 +66,12 @@ const Home = (props: HomeProps) => {
   const { activeStory, setActiveStory } = props;
   const platform = usePlatform();
   const { viewWidth } = useAdaptivityConditionalRender();
-
+  
+  
+  const { id } = useAppSelector((state) => state.authReducer);
+  const { unreadChats } = useAppSelector((state) => state.chatsReducer);
+  const dispatch = useAppDispatch();
+  const { addChats } = chatsSlice.actions;
   const onStoryChange = (e: any) => {
     const newActiveStory = e.currentTarget.dataset.story;
     setActiveStory(newActiveStory);
@@ -72,15 +81,27 @@ const Home = (props: HomeProps) => {
       router.pushPage(PAGE_PROFILE, { id: `${username}` });
     }
   };
+  
+ 
+  
+  useEffect(() => {
+    dispatch(checkChats());
+    id && socket.emit('addUser', id);
+    id &&
+      socket.on('getMessage', (data) => {
+        dispatch(addChats(data.message.chatId));
+      });
+  }, []);
 
   const isVKCOM = platform !== Platform.VKCOM;
-
+console.log(activeStory);
   return (
     <SplitLayout
       modal={<Modal />}
       header={isVKCOM && <PanelHeader separator={false} />}
       style={{ justifyContent: 'center' }}
     >
+    
       {viewWidth.tabletPlus && (
         <SplitCol
           className={viewWidth.tabletPlus.className}
@@ -137,6 +158,13 @@ const Home = (props: HomeProps) => {
                     : {}
                 }
                 data-story={PANEL_MESSAGES}
+                indicator={
+                unreadChats.length>0?
+                  <Counter size="s" mode="prominent">
+                    {unreadChats.length}
+                  </Counter>
+                  :<></>
+                }
                 onClick={onStoryChange}
                 before={<Icon28MessageOutline />}
               >
@@ -190,11 +218,11 @@ const Home = (props: HomeProps) => {
                   onClick={onStoryChange}
                   selected={activeStory === PANEL_MESSAGES}
                   data-story={PANEL_MESSAGES}
-                  // indicator={
-                  //   <Counter size="s" mode="prominent">
-                  //     12
-                  //   </Counter>
-                  // }
+                  indicator={
+                    <Counter size="s" mode="prominent">
+                      {unreadChats.length}
+                    </Counter>
+                  }
                   text="Сообщения"
                 >
                   <Icon28MessageOutline />

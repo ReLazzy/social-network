@@ -5,6 +5,7 @@ import {
   View,
   PanelHeader,
   SplitCol,
+  Spinner,
 } from '@vkontakte/vkui';
 import './app.css';
 import { useEffect, useState } from 'react';
@@ -28,7 +29,9 @@ function App() {
   const location = useLocation();
 
   const router = useRouter();
-  const { isAuth } = useAppSelector((state) => state.authReducer);
+  const { isAuth, id, isLoading } = useAppSelector(
+    (state) => state.authReducer
+  );
   const [activeStory, setActiveStory] = useState(location.getViewId());
   const dispatch = useAppDispatch();
 
@@ -58,7 +61,9 @@ function App() {
   console.log('activeStory:', activeStory);
   return (
     <AppRoot>
-      {isAuth ? (
+      {isLoading ? (
+        <Spinner size="large" style={{ margin: '20px 0' }} />
+      ) : isAuth && id !== '' ? (
         <Home activeStory={activeStory} setActiveStory={setActiveStory}></Home>
       ) : (
         <SplitLayout header={<PanelHeader separator={false} />}>

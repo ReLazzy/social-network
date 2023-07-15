@@ -1,6 +1,6 @@
 import React, { RefObject, useEffect, useRef, useState } from 'react';
 import { PanelIDProps } from '../types/Panel';
-import { Button, Group, Headline, Panel, Text, Title } from '@vkontakte/vkui';
+import { Button, Group, Headline, Panel, Text, Title,Spinner } from '@vkontakte/vkui';
 import { Icon56NewsfeedOutline } from '@vkontakte/icons';
 import Post from '../components/Post';
 import CreatePost from '../components/CreatePost';
@@ -39,16 +39,14 @@ const Feed = (props: PanelIDProps) => {
     setPostPage(0);
   }, [id]);
   useEffect(() => {
-    setTimeout(() => {
-      id && dispatch(fetchPost({ username: '', page: postPage, date: date }));
-    }, 100);
+     !isLoading&& id && dispatch(fetchPost({ username: '', page: postPage, date: date }));
   }, [postPage]);
 
   return (
     <Panel id={props.id}>
       <Navbar text="Новости" />
       <CreatePost></CreatePost>
-
+        {isLoading&& <Spinner size="large" style={{ margin: '20px 0' }} />}
       {posts.map((post) => (
         <Post key={post._id} {...post} />
       ))}

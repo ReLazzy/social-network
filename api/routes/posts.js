@@ -118,11 +118,9 @@ router.post('/timeline/all', authMiddleware, async (req, res) => {
       })
       .skip(limit * page)
       .limit(limit);
-    const pages = await Post.find({
-      userId: allUsers,
-      createdAt: { $lt: date },
-    }).count();
-
+      console.log(page)
+    
+    
     const allPost = [].concat(...friendPosts);
     res.json({ allPost, usersProfile });
   } catch (err) {
