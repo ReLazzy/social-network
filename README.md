@@ -1,4 +1,4 @@
-# vk-test
+# social network
 
 
 ## Stack
@@ -8,7 +8,5 @@
 - Node
 - Redux
 
-
-## ~~work~~ url  http://45.141.76.248:3000/
 
 
